@@ -1,0 +1,79 @@
+﻿@startuml
+enum TicketStatus {
+  Open
+  InProgress
+  WorkAround
+  Resolved
+  Closed
+}
+
+enum TicketPriority {
+  Low
+  Medium
+  High
+  Urgent
+}
+
+class Company {
+  +int Id
+  +string Name
+}
+
+class User {
+  +int Id
+  +string Username
+  +string PasswordHash
+  +string FullName
+  +string Email
+}
+
+class Role {
+  +int Id
+  +string Name
+}
+
+class Ticket {
+  +int Id
+  +string Title
+  +string Description
+  +TicketPriority Priority
+  +TicketStatus CurrentStatus
+}
+
+class StatusHistory {
+  +int Id
+  +TicketStatus Status
+  +DateTime Timestamp
+}
+
+class Message {
+  +int Id
+  +string Content
+  +bool IsInternal
+  +DateTime Timestamp
+}
+
+class Attachment {
+  +int Id
+  +string FilePath
+  +string FileType
+  +DateTime UploadedAt
+}
+
+Company "1" -- "0..*" User : employs
+Company "1" -- "0..*" Ticket : owns
+
+Role "1" -- "0..*" User : assigned_to
+
+User "1" -- "0..*" Ticket : reports
+User "0..1" -- "0..*" Ticket : assigned_to
+
+User "1" -- "0..*" Message : writes
+User "1" -- "0..*" StatusHistory : changes
+User "1" -- "0..*" Attachment : uploads
+
+Ticket "1" -- "0..*" StatusHistory : has
+Ticket "1" -- "0..*" Message : has
+Ticket "1" -- "0..*" Attachment : has
+
+@enduml
