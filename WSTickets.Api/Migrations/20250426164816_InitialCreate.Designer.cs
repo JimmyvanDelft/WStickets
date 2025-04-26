@@ -12,8 +12,8 @@ using WSTickets.Api.Data;
 namespace WSTickets.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250426155323_initialCreate")]
-    partial class initialCreate
+    [Migration("20250426164816_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
