@@ -10,12 +10,36 @@ public class TicketListViewModel : BaseViewModel
     public ObservableCollection<Ticket> Tickets { get; set; } = new();
     public ICommand RefreshCommand { get; }
 
+    private string _errorMessage;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set { _errorMessage = value; OnPropertyChanged(); }
+    }
+
+    private bool _hasError;
+    public bool HasError
+    {
+        get => _hasError;
+        set { _hasError = value; OnPropertyChanged(); }
+    }
+
+
     private bool isRefreshing;
     public bool IsRefreshing
     {
         get => isRefreshing;
         set { isRefreshing = value; OnPropertyChanged(); }
     }
+
+    private bool noTicketsMessageVisible;
+    public bool TicketsMessageVisible => !noTicketsMessageVisible;
+    public bool NoTicketsMessageVisible
+    {
+        get => noTicketsMessageVisible;
+        set { noTicketsMessageVisible = value; OnPropertyChanged(); }
+    }
+
 
     public TicketListViewModel()
     {
@@ -27,15 +51,30 @@ public class TicketListViewModel : BaseViewModel
     {
         IsRefreshing = true;
 
-        var tickets = await TicketService.Instance.GetMyTicketsAsync();
-
-        MainThread.BeginInvokeOnMainThread(() =>
+        try
         {
-            Tickets.Clear();
-            foreach (var ticket in tickets)
-                Tickets.Add(ticket);
-        });
+            var tickets = await TicketService.Instance.GetMyTicketsAsync();
 
-        IsRefreshing = false;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Tickets.Clear();
+                foreach (var ticket in tickets)
+                    Tickets.Add(ticket);
+
+                NoTicketsMessageVisible = Tickets.Count == 0;
+                HasError = false;
+            });
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Something went wrong fetching your tickets: {ex.Message}";
+            HasError = true;
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+
     }
+
 }

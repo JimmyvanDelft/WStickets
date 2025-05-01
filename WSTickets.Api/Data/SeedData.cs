@@ -131,6 +131,7 @@ namespace WSTickets.Api.Data
                     CurrentStatus = TicketStatus.Open,
                     CompanyId = wikibase.Id,
                     ReporterId = pimUser.Id,
+                    AssigneeId = adminUser.Id,
                     Messages = new List<Message>
                     {
                         new Message

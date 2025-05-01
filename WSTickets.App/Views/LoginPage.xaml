@@ -2,18 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WSTickets.App.Views.LoginPage"
-             Title="Inloggen">
+             Title="Login">
     <ContentPage.Content>
-        <StackLayout Padding="30" Spacing="15">
-            <Label Text="Gebruikersnaam" />
-            <Entry Text="{Binding Username}" Placeholder="Voer je gebruikersnaam in" />
+        <ScrollView>
+            <StackLayout Padding="30" Spacing="15">
 
-            <Label Text="Wachtwoord" />
-            <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Voer je wachtwoord in" />
+                <Label Text="Username" />
+                <Entry Text="{Binding Username}" Placeholder="Type your username" />
 
-            <Button Text="Login" Command="{Binding LoginCommand}" />
+                <Label Text="Password" />
+                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Type your password" />
 
-            <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding HasError}" />
-        </StackLayout>
+                <Button Text="Login" Command="{Binding LoginCommand}" />
+
+                <Label Text="{Binding ErrorMessage}" 
+                       TextColor="Red"
+                       FontAttributes="Italic"
+                       IsVisible="{Binding HasError}" 
+                       Margin="0,10,0,0"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

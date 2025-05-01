@@ -1,7 +1,19 @@
 ﻿namespace WSTickets.App.Models;
 
-public enum TicketPriority { Low, Medium, High, Urgent }
-public enum TicketStatus { Open, InProgress, WorkAround, Resolved, Closed }
+public enum TicketPriority
+{
+    Low,
+    Medium,
+    High,
+    Urgent
+}
+public enum TicketStatus { 
+    Open, 
+    InProgress, 
+    WorkAround, 
+    Resolved, 
+    Closed 
+}
 
 public class Ticket
 {

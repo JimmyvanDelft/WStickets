@@ -1,6 +1,9 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using WSTickets.App.Models;
 
 namespace WSTickets.App.Services;
 
@@ -11,28 +14,45 @@ public class AuthService
 
     private AuthService() { }
 
-    public async Task<bool> LoginAsync(string username, string password)
+    public async Task<(bool Success, string ErrorMessage)> LoginAsync(string username, string password)
     {
         var credentials = new { username, password };
-        var content = new StringContent(JsonSerializer.Serialize(credentials), Encoding.UTF8, "application/json");
+        var response = await ApiClient.Client.PostAsJsonAsync("auth/login", credentials);
 
-        var response = await ApiClient.Client.PostAsync("auth/login", content);
-
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var token = await response.Content.ReadAsStringAsync();
-
-            // Store token securely
-            await SecureStorage.SetAsync("auth_token", token);
-
-            // Set Authorization header globally
-            ApiClient.SetAuthToken(token);
-
-            return true;
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                return (false, "Incorrect username or password.");
+            var error = await response.Content.ReadAsStringAsync();
+            return (false, $"Server error {response.StatusCode}: {error}");
         }
 
-        return false;
+        AuthResponse result;
+        try
+        {
+            result = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            if (result == null || string.IsNullOrWhiteSpace(result.Token))
+                return (false, "Login succeeded but no token returned.");
+        }
+        catch (JsonException)
+        {
+            return (false, "Could not parse authentication response.");
+        }
+
+        try
+        {
+            await SecureStorage.SetAsync("auth_token", result.Token);
+        }
+        catch (Exception ex)
+        {
+            return (false, $"Failed to save token: {ex.Message}");
+        }
+
+        ApiClient.SetAuthToken(result.Token);
+
+        return (true, string.Empty);
     }
+
 
     public async Task<bool> IsLoggedInAsync()
     {
@@ -49,7 +69,7 @@ public class AuthService
 
     public async Task LogoutAsync()
     {
-        await SecureStorage.SetAsync("auth_token", string.Empty);
-        ApiClient.SetAuthToken(string.Empty); // clear header
+        SecureStorage.Remove("auth_token");
+        ApiClient.SetAuthToken("");
     }
 }

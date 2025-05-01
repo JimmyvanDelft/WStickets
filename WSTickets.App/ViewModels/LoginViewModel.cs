@@ -45,21 +45,20 @@ public class LoginViewModel : BaseViewModel
 
     private async Task Login()
     {
-        var success = await AuthService.Instance.LoginAsync(Username, Password);
+        var (success, errorMessage) = await AuthService.Instance.LoginAsync(Username, Password);
+
+        System.Diagnostics.Debug.WriteLine($"[LoginViewModel] Login success: {success}, error: {errorMessage}");
 
         if (success)
         {
-            // Ga naar hoofdpagina, bijvoorbeeld TicketListPage
+            HasError = false;
             await Shell.Current.GoToAsync("//TicketListPage");
         }
         else
         {
-            ErrorMessage = "Login mislukt. Controleer je gegevens.";
+            ErrorMessage = errorMessage;
             HasError = true;
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    private void OnPropertyChanged([CallerMemberName] string name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

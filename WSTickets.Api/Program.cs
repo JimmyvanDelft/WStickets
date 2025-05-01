@@ -39,6 +39,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
     };
     options.MapInboundClaims = false;
+
 });
 
 var app = builder.Build();
@@ -55,8 +56,6 @@ app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 // app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
