@@ -1,5 +1,8 @@
-﻿namespace WSTickets.App.Models;
+﻿using System.Text.Json.Serialization;
 
+namespace WSTickets.App.Models;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TicketPriority
 {
     Low,
@@ -7,6 +10,8 @@ public enum TicketPriority
     High,
     Urgent
 }
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum TicketStatus { 
     Open, 
     InProgress, 

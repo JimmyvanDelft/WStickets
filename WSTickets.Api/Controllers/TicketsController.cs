@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WSTickets.Api.Data;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
@@ -47,6 +48,22 @@ public class TicketsController : ControllerBase
                 AssigneeId = t.AssigneeId,
                 CompanyId = t.CompanyId
             })
+            .ToListAsync();
+
+        return Ok(tickets);
+    }
+
+    [HttpGet("mine")]
+    public async Task<ActionResult<IEnumerable<Ticket>>> GetMyTickets()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            return Unauthorized();
+
+        int userId = int.Parse(userIdClaim.Value);
+
+        var tickets = await _context.Tickets
+            .Where(t => t.ReporterId == userId || t.AssigneeId == userId)
             .ToListAsync();
 
         return Ok(tickets);
