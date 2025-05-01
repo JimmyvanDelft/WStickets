@@ -1,10 +1,10 @@
-﻿namespace WSTickets.App
+﻿namespace WSTickets.App;
+using WSTickets.App.Views;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
