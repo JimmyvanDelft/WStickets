@@ -15,7 +15,8 @@ public class TicketService
     {
         try
         {
-            var response = await ApiClient.Client.GetAsync("tickets");
+            var request = new HttpRequestMessage(HttpMethod.Get, "tickets/mine");
+            var response = await ApiClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {

@@ -67,9 +67,18 @@ public class AuthService
         return false;
     }
 
-    public async Task LogoutAsync()
+    public async Task LogoutAsync(string? message = null)
     {
         SecureStorage.Remove("auth_token");
         ApiClient.SetAuthToken("");
+
+        // Navigate to login page
+        await Shell.Current.GoToAsync("//LoginPage");
+
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            await Shell.Current.DisplayAlert("Logged Out", message, "OK");
+        }
     }
+
 }

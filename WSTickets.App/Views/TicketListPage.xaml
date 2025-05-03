@@ -31,8 +31,8 @@
                             <StackLayout>
                                 <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="16"/>
                                 <Label Text="{Binding Description}" FontSize="13" LineBreakMode="TailTruncation"/>
-                                <Label Text="{Binding Priority}" FontSize="12" TextColor="DarkOrange"/>
-                                <Label Text="{Binding CurrentStatus}" FontSize="12" TextColor="DarkGreen"/>
+                                <Label Text="{Binding Priority}" FontSize="12" TextColor="Purple"/>
+                                <Label Text="{Binding CurrentStatus}" FontSize="12" TextColor="DarkMagenta"/>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>
