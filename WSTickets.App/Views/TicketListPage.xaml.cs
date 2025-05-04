@@ -16,4 +16,17 @@ public partial class TicketListPage : ContentPage
         await AuthService.Instance.LogoutAsync();
         await Shell.Current.GoToAsync("//LoginPage");
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is TicketListViewModel vm)
+        {
+            // Only refresh if not already refreshing
+            if (!vm.IsRefreshing)
+                vm.RefreshCommand.Execute(null);
+        }
+    }
+
 }

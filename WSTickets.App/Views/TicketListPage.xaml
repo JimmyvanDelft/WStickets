@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WSTickets.App.Views.TicketListPage"
@@ -8,22 +7,21 @@
         <ToolbarItem Text="Logout" Clicked="OnLogoutClicked" Priority="0" Order="Primary"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout>
-        <Label Text="No tickets assigned to you"
-           HorizontalOptions="Center"
-           VerticalOptions="Center"
-           TextColor="Gray"
-           FontAttributes="Italic"
-           IsVisible="{Binding NoTicketsMessageVisible}" />
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <StackLayout>
+            <Label Text="No tickets assigned to you"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="Gray"
+                   FontAttributes="Italic"
+                   IsVisible="{Binding NoTicketsMessageVisible}" />
 
-        <Label Text="{Binding ErrorMessage}" 
-           TextColor="Red"
-           IsVisible="{Binding HasError}"
-           HorizontalOptions="Center"
-           Margin="10"/>
+            <Label Text="{Binding ErrorMessage}" 
+                   TextColor="Red"
+                   IsVisible="{Binding HasError}"
+                   HorizontalOptions="Center"
+                   Margin="10"/>
 
-
-        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
             <CollectionView ItemsSource="{Binding Tickets}" IsVisible="{Binding TicketsMessageVisible}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -38,8 +36,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </RefreshView>
-    </StackLayout>
-
+        </StackLayout>
+    </RefreshView>
 
 </ContentPage>
