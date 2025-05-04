@@ -2,6 +2,7 @@
 
 using System.Net.Mail;
 using WSTickets.App.Views;
+using WSTickets.App.Services;
 
 public partial class AppShell : Shell
 {
@@ -53,4 +54,10 @@ public partial class AppShell : Shell
     //    < ShellContent Route = "SettingsPage" ContentTemplate = "{DataTemplate views:SettingsPage}" />
     //</ FlyoutItem >
     }
+    private async void OnLogoutClicked(object sender, EventArgs e)
+    {
+        await AuthService.Instance.LogoutAsync("You have been logged out.");
+        App.NavigateToLoginPage(); // Geen Shell, alleen login
+    }
+
 }

@@ -11,9 +11,10 @@
         <ShellContent Route="TicketListPage" ContentTemplate="{DataTemplate views:TicketListPage}" />
     </FlyoutItem>
 
-    <!-- Logout -->
-    <FlyoutItem Title="Logout" Icon="logout">
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate views:LoginPage}" />
-    </FlyoutItem>
+    <MenuItem 
+    Text="Logout"
+    IconImageSource="logout"
+    Clicked="OnLogoutClicked"
+    IsDestructive="True" />
 
 </Shell>

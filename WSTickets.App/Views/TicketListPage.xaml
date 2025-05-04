@@ -3,10 +3,6 @@
              x:Class="WSTickets.App.Views.TicketListPage"
              Title="My Tickets">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Logout" Clicked="OnLogoutClicked" Priority="0" Order="Primary"/>
-    </ContentPage.ToolbarItems>
-
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <StackLayout>
             <Label Text="No tickets assigned to you"

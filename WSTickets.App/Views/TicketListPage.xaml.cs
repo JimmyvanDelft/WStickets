@@ -11,12 +11,6 @@ public partial class TicketListPage : ContentPage
         BindingContext = new TicketListViewModel();
     }
 
-    private async void OnLogoutClicked(object sender, EventArgs e)
-    {
-        await AuthService.Instance.LogoutAsync();
-        await Shell.Current.GoToAsync("//LoginPage");
-    }
-
     protected override void OnAppearing()
     {
         base.OnAppearing();

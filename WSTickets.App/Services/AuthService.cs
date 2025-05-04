@@ -72,12 +72,11 @@ public class AuthService
         SecureStorage.Remove("auth_token");
         ApiClient.SetAuthToken("");
 
-        // Navigate to login page
-        await Shell.Current.GoToAsync("//LoginPage");
+        App.NavigateToLoginPage();
 
         if (!string.IsNullOrWhiteSpace(message))
         {
-            await Shell.Current.DisplayAlert("Logged Out", message, "OK");
+            await Application.Current.MainPage.DisplayAlert("Logged Out", message, "OK");
         }
     }
 

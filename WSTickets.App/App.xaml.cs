@@ -7,21 +7,32 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-
-        MainPage = new AppShell();
-
-        // Defer Init until UI is ready
-        Application.Current.Dispatcher.Dispatch(async () => await InitAsync());
+        InitializeMainPageAsync();
     }
 
-    private async Task InitAsync()
+    private async void InitializeMainPageAsync()
     {
         var isLoggedIn = await AuthService.Instance.IsLoggedInAsync();
 
         if (isLoggedIn)
-            await Shell.Current.GoToAsync("//TicketListPage");
+        {
+            MainPage = new AppShell();
+        }
         else
-            await Shell.Current.GoToAsync("//LoginPage");
+        {
+            MainPage = new NavigationPage(new LoginPage());
+        }
+    }
+
+    public static void NavigateToShell()
+    {
+        Current.MainPage = new AppShell();
+    }
+
+    public static void NavigateToLoginPage()
+    {
+        Current.MainPage = new NavigationPage(new LoginPage());
     }
 }
+
 

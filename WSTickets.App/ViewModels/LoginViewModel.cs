@@ -52,6 +52,9 @@ public class LoginViewModel : BaseViewModel
         if (success)
         {
             HasError = false;
+
+            App.NavigateToShell();
+
             await Shell.Current.GoToAsync("//TicketListPage");
         }
         else
@@ -60,5 +63,6 @@ public class LoginViewModel : BaseViewModel
             HasError = true;
         }
     }
+
 
 }
