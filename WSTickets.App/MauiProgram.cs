@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using UraniumUI;
+using CommunityToolkit.Maui;
 
 namespace WSTickets.App;
 
@@ -10,6 +11,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .UseUraniumUI()
             .UseUraniumUIMaterial()
             .ConfigureFonts(fonts =>

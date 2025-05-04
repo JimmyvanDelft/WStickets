@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WSTickets.App.Views.LoginPage"
-             Title="Login">
-    <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="30" Spacing="15">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
+    x:Class="WSTickets.App.Views.LoginPage"
+    BackgroundColor="#F9FAFB"
+    Title="Login">
 
-                <Label Text="Username" />
-                <Entry Text="{Binding Username}" Placeholder="Type your username" />
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25">
 
-                <Label Text="Password" />
-                <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Type your password" />
+            <Label Text="Sign in to your Account"
+                   FontSize="28"
+                   TextColor="#111827" />
 
-                <Button Text="Login" Command="{Binding LoginCommand}" />
+            <Label Text="Enter your credentials to continue"
+                   FontSize="14"
+                   TextColor="#6B7280" />
 
-                <Label Text="{Binding ErrorMessage}" 
-                       TextColor="Red"
-                       FontAttributes="Italic"
-                       IsVisible="{Binding HasError}" 
-                       Margin="0,10,0,0"
-                       HorizontalOptions="Center" />
-            </StackLayout>
-        </ScrollView>
-    </ContentPage.Content>
+            <material:TextField 
+                Title="Email"
+                Text="{Binding Username}" />
+
+            <material:TextField 
+                Title="Password"
+                Text="{Binding Password}"
+                IsPassword="True" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   FontSize="13"
+                   TextColor="Red"
+                   IsVisible="{Binding HasError}"
+                   HorizontalOptions="Center" />
+
+            <Button 
+                Text="Login"
+                Command="{Binding LoginCommand}"
+                StyleClass="FilledButton"
+                BackgroundColor="#10B981"
+                TextColor="White"
+                CornerRadius="12"
+                FontSize="16"
+                HeightRequest="50" />
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label Text="Don't have an account?"
+                       FontSize="13"
+                       TextColor="#6B7280" />
+                <Label Text=" Register"
+                       FontSize="13"
+                       TextColor="#10B981"
+                       FontAttributes="Bold" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
