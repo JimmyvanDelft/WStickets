@@ -4,55 +4,85 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
     x:Class="WSTickets.App.Views.LoginPage"
-    BackgroundColor="#F9FAFB"
-    Title="Login">
+    xmlns:nav="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+    nav:NavigationPage.HasNavigationBar="False"
+    >
+
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.5,0.5">
+            <GradientStop Color="#222531" Offset=".0"/>
+            <GradientStop Color="#191B27" Offset=".5"/>
+            <GradientStop Color="#0E0E1B" Offset="1.0"/>
+        </RadialGradientBrush>
+    </ContentPage.Background>
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="25">
+        <Grid Padding="0" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Label Text="Sign in to your Account"
-                   FontSize="28"
-                   TextColor="#111827" />
+            <Frame
+                Grid.Row="0"
+                Margin="20"
+                Padding="30"
+                BackgroundColor="White"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="400">
 
-            <Label Text="Enter your credentials to continue"
-                   FontSize="14"
-                   TextColor="#6B7280" />
+                <VerticalStackLayout Spacing="20">
 
-            <material:TextField 
-                Title="Email"
-                Text="{Binding Username}" />
+                    <Image Source="wikibase_contrast.png"
+                           WidthRequest="250"
+                           HorizontalOptions="Center" 
+                           Margin="20"/>
 
-            <material:TextField 
-                Title="Password"
-                Text="{Binding Password}"
-                IsPassword="True" />
+                    <Label Text="Sign in to your Account"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" 
+                           HorizontalOptions="Center" />
 
-            <Label Text="{Binding ErrorMessage}"
-                   FontSize="13"
-                   TextColor="Red"
-                   IsVisible="{Binding HasError}"
-                   HorizontalOptions="Center" />
+                    <Label Text="Don't have an account? Sign Up"
+                           FontSize="13"
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
 
-            <Button 
-                Text="Login"
-                Command="{Binding LoginCommand}"
-                StyleClass="FilledButton"
-                BackgroundColor="#10B981"
-                TextColor="White"
-                CornerRadius="12"
-                FontSize="16"
-                HeightRequest="50" />
+                    <material:TextField 
+                        Title="Email"
+                        Text="{Binding Username}"
+                        Icon="{FontImageSource FontFamily='MaterialRegular', Glyph=''}"/>
 
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Don't have an account?"
-                       FontSize="13"
-                       TextColor="#6B7280" />
-                <Label Text=" Register"
-                       FontSize="13"
-                       TextColor="#10B981"
-                       FontAttributes="Bold" />
-            </HorizontalStackLayout>
+                    <material:TextField 
+                        Title="Password"
+                        Text="{Binding Password}"
+                        IsPassword="True"
+                        Icon="{FontImageSource FontFamily='MaterialRegular', Glyph=''}"/>
 
-        </VerticalStackLayout>
+                    <Label Text="{Binding ErrorMessage}"
+                           FontSize="13"
+                           TextColor="Red"
+                           IsVisible="{Binding HasError}"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="Forgot Your Password ?"
+                           FontSize="12"
+                           TextColor="{StaticResource Primary}" 
+                           HorizontalOptions="End" />
+
+                        <Button 
+                        Text="Log In"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="12"
+                        FontSize="16"
+                        HeightRequest="50" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
     </ScrollView>
 </ContentPage>

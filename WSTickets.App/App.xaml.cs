@@ -7,6 +7,9 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        // Temporary MainPage to show the login page
+        MainPage = new ContentPage();
         InitializeMainPageAsync();
     }
 
