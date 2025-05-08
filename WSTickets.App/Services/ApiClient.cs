@@ -19,7 +19,7 @@ public static class ApiClient
 
         if (DeviceInfo.Platform == DevicePlatform.Android)
         {
-            // Android emulator moet 10.0.2.2 gebruiken om host machine te bereiken
+            // Android emulator
             baseAddress = "http://10.0.2.2:5131/api/";
         }
         else

@@ -1,47 +1,30 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using WSTickets.App.Services;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+
 
 namespace WSTickets.App.ViewModels;
 
-public class LoginViewModel : BaseViewModel
+public partial class LoginViewModel : ObservableObject
 {
-    private string _username;
-    private string _password;
-    private string _errorMessage;
-    private bool _hasError;
+    [ObservableProperty]
+    private string username;
 
-    public string Username
-    {
-        get => _username;
-        set { _username = value; OnPropertyChanged(); }
-    }
+    [ObservableProperty]
+    private string password;
 
-    public string Password
-    {
-        get => _password;
-        set { _password = value; OnPropertyChanged(); }
-    }
+    [ObservableProperty]
+    private string errorMessage;
 
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-        set { _errorMessage = value; OnPropertyChanged(); }
-    }
-
-    public bool HasError
-    {
-        get => _hasError;
-        set { _hasError = value; OnPropertyChanged(); }
-    }
-
-    public ICommand LoginCommand { get; }
+    [ObservableProperty]
+    private bool hasError;
 
     public LoginViewModel()
     {
-        LoginCommand = new Command(async () => await Login());
+        LoginCommand = new AsyncRelayCommand(Login);
     }
+
+    public IAsyncRelayCommand LoginCommand { get; }
 
     private async Task Login()
     {
@@ -52,9 +35,7 @@ public class LoginViewModel : BaseViewModel
         if (success)
         {
             HasError = false;
-
             App.NavigateToShell();
-
             await Shell.Current.GoToAsync("//TicketListPage");
         }
         else
@@ -63,6 +44,4 @@ public class LoginViewModel : BaseViewModel
             HasError = true;
         }
     }
-
-
 }

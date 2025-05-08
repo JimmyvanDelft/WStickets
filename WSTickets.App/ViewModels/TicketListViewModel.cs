@@ -1,51 +1,36 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using WSTickets.App.Models;
 using WSTickets.App.Services;
 
 namespace WSTickets.App.ViewModels;
 
-public class TicketListViewModel : BaseViewModel
+public partial class TicketListViewModel : ObservableObject
 {
-    public ObservableCollection<Ticket> Tickets { get; set; } = new();
-    public ICommand RefreshCommand { get; }
+    public ObservableCollection<Ticket> Tickets { get; } = new();
 
-    private string _errorMessage;
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-        set { _errorMessage = value; OnPropertyChanged(); }
-    }
+    [ObservableProperty]
+    private string errorMessage;
 
-    private bool _hasError;
-    public bool HasError
-    {
-        get => _hasError;
-        set { _hasError = value; OnPropertyChanged(); }
-    }
+    [ObservableProperty]
+    private bool hasError;
 
-
+    [ObservableProperty]
     private bool isRefreshing;
-    public bool IsRefreshing
-    {
-        get => isRefreshing;
-        set { isRefreshing = value; OnPropertyChanged(); }
-    }
 
+    [ObservableProperty]
     private bool noTicketsMessageVisible;
-    public bool TicketsMessageVisible => !noTicketsMessageVisible;
-    public bool NoTicketsMessageVisible
-    {
-        get => noTicketsMessageVisible;
-        set { noTicketsMessageVisible = value; OnPropertyChanged(); }
-    }
 
+    public bool TicketsMessageVisible => !NoTicketsMessageVisible;
 
     public TicketListViewModel()
     {
-        RefreshCommand = new Command(async () => await LoadTicketsAsync());
+        RefreshCommand = new AsyncRelayCommand(LoadTicketsAsync);
         Task.Run(LoadTicketsAsync);
     }
+
+    public IAsyncRelayCommand RefreshCommand { get; }
 
     private async Task LoadTicketsAsync()
     {
@@ -74,7 +59,5 @@ public class TicketListViewModel : BaseViewModel
         {
             IsRefreshing = false;
         }
-
     }
-
 }

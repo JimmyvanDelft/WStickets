@@ -17,6 +17,7 @@ public partial class AppShell : Shell
         //Routing.RegisterRoute(nameof(AccountPage), typeof(AccountPage));
         //Routing.RegisterRoute(nameof(AdminDashboardPage), typeof(AdminDashboardPage));
         //Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+
         //Routing.RegisterRoute(nameof(TicketDetailPage), typeof(TicketDetailPage));
         //Routing.RegisterRoute(nameof(AddMessagePage), typeof(AddMessagePage));
         //Routing.RegisterRoute(nameof(ChangeStatusPage), typeof(ChangeStatusPage));
@@ -57,7 +58,7 @@ public partial class AppShell : Shell
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         await AuthService.Instance.LogoutAsync("You have been logged out.");
-        App.NavigateToLoginPage(); // Geen Shell, alleen login
+        App.NavigateToLoginPage();
     }
 
 }
