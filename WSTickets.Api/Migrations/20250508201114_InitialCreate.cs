@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WSTickets.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class initialcreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -172,7 +172,8 @@ namespace WSTickets.Api.Migrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TicketId = table.Column<int>(type: "integer", nullable: false),
-                    ChangedById = table.Column<int>(type: "integer", nullable: false)
+                    ChangedById = table.Column<int>(type: "integer", nullable: false),
+                    TicketId1 = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -183,6 +184,11 @@ namespace WSTickets.Api.Migrations
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StatusHistories_Tickets_TicketId1",
+                        column: x => x.TicketId1,
+                        principalTable: "Tickets",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_StatusHistories_Users_ChangedById",
                         column: x => x.ChangedById,
@@ -220,6 +226,11 @@ namespace WSTickets.Api.Migrations
                 name: "IX_StatusHistories_TicketId",
                 table: "StatusHistories",
                 column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StatusHistories_TicketId1",
+                table: "StatusHistories",
+                column: "TicketId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_AssigneeId",

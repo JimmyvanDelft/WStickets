@@ -27,4 +27,5 @@ public class Ticket
     public ICollection<StatusHistory> StatusHistories { get; set; }
     public ICollection<Message> Messages { get; set; }
     public ICollection<Attachment> Attachments { get; set; }
+    public List<StatusHistory> StatusHistory { get; set; } = new();
 }
