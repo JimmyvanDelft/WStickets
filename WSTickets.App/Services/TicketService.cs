@@ -61,4 +61,28 @@ public class TicketService
         }
     }
 
+    public async Task<List<Message>> GetMessagesAsync(int ticketId)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"tickets/{ticketId}/messages");
+        var response = await ApiClient.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<Message>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
+
+    public async Task<List<Attachment>> GetAttachmentsAsync(int ticketId)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"tickets/{ticketId}/attachments");
+        var response = await ApiClient.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<Attachment>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
+
+    public async Task<List<StatusHistory>> GetStatusHistoryAsync(int ticketId)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"tickets/{ticketId}/statushistory");
+        var response = await ApiClient.SendAsync(request);
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<StatusHistory>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
+
 }
