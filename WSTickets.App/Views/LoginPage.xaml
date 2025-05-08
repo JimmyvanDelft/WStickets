@@ -52,14 +52,13 @@
 
                     <material:TextField 
                         Title="Email"
-                        Text="{Binding Username}"
-                        Icon="{FontImageSource FontFamily='MaterialRegular', Glyph=''}"/>
+                        Text="{Binding Username}"/>
 
                     <material:TextField 
                         Title="Password"
                         Text="{Binding Password}"
                         IsPassword="True"
-                        Icon="{FontImageSource FontFamily='MaterialRegular', Glyph=''}"/>
+                        />
 
                     <Label Text="{Binding ErrorMessage}"
                            FontSize="13"
