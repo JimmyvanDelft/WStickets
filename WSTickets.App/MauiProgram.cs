@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using UraniumUI;
 using CommunityToolkit.Maui;
+using WSTickets.App.Views;
+using WSTickets.App.ViewModels;
 
 namespace WSTickets.App;
 
@@ -23,6 +25,11 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddMaterialSymbolsFonts();
             });
+
+        builder.Services.AddTransient<TicketListViewModel>();
+        builder.Services.AddTransient<TicketDetailViewModel>();
+        builder.Services.AddTransient<TicketListPage>();
+        builder.Services.AddTransient<TicketDetailPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

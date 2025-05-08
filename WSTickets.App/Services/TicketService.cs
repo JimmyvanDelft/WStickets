@@ -39,4 +39,26 @@ public class TicketService
         }
     }
 
+    public async Task<Ticket?> GetTicketByIdAsync(int ticketId)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"tickets/{ticketId}");
+            var response = await ApiClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Ticket>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 }

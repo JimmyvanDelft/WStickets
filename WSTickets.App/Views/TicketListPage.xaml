@@ -1,7 +1,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WSTickets.App.Views.TicketListPage"
-             Title="My Tickets">
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             Title="My Tickets"
+             xmlns:model="clr-namespace:WSTickets.App.Models"
+             xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
+             x:DataType="viewmodel:TicketListViewModel">
 
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <StackLayout>
@@ -18,10 +22,15 @@
                    HorizontalOptions="Center"
                    Margin="10"/>
 
-            <CollectionView ItemsSource="{Binding Tickets}" IsVisible="{Binding TicketsMessageVisible}">
+            <CollectionView ItemsSource="{Binding Tickets}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="model:Ticket">
                         <Frame Margin="10" Padding="10" BorderColor="Gray" CornerRadius="8">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketListViewModel}}, Path=GoToTicketCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
                             <StackLayout>
                                 <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="16"/>
                                 <Label Text="{Binding Description}" FontSize="13" LineBreakMode="TailTruncation"/>
@@ -32,6 +41,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
         </StackLayout>
     </RefreshView>
 
