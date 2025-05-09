@@ -22,12 +22,14 @@ public class AttachmentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AttachmentDto>>> GetAttachments(int ticketId)
     {
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
         var attachments = await _context.Attachments
             .Where(a => a.TicketId == ticketId)
             .Select(a => new AttachmentDto
             {
                 Id = a.Id,
-                FilePath = a.FilePath,
+                FilePath = baseUrl + a.FilePath,
                 FileType = a.FileType,
                 UploadedAt = a.UploadedAt,
                 UploadedById = a.UploadedById
@@ -42,6 +44,10 @@ public class AttachmentsController : ControllerBase
     {
         if (file == null || file.Length == 0)
             return BadRequest("No file uploaded.");
+
+        var ticketExists = await _context.Tickets.AnyAsync(t => t.Id == ticketId);
+        if (!ticketExists)
+            return NotFound($"Ticket with ID {ticketId} not found.");
 
         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
         if (!Directory.Exists(uploadsFolder))
@@ -70,4 +76,5 @@ public class AttachmentsController : ControllerBase
 
         return CreatedAtAction(nameof(GetAttachments), new { ticketId = ticketId }, null);
     }
+
 }

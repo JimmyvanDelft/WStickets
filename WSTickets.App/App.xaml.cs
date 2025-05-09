@@ -1,15 +1,41 @@
-﻿namespace WSTickets.App
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
-        }
+﻿namespace WSTickets.App;
+using WSTickets.App.Services;
+using WSTickets.App.Views;
 
-        protected override Window CreateWindow(IActivationState? activationState)
+public partial class App : Application
+{
+    public App()
+    {
+        InitializeComponent();
+
+        // Temporary MainPage to show the login page
+        MainPage = new ContentPage();
+        InitializeMainPageAsync();
+    }
+
+    private async void InitializeMainPageAsync()
+    {
+        var isLoggedIn = await AuthService.Instance.IsLoggedInAsync();
+
+        if (isLoggedIn)
         {
-            return new Window(new AppShell());
+            MainPage = new AppShell();
+        }
+        else
+        {
+            MainPage = new NavigationPage(new LoginPage());
         }
     }
+
+    public static void NavigateToShell()
+    {
+        Current.MainPage = new AppShell();
+    }
+
+    public static void NavigateToLoginPage()
+    {
+        Current.MainPage = new NavigationPage(new LoginPage());
+    }
 }
+
+

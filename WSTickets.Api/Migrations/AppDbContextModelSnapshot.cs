@@ -140,6 +140,9 @@ namespace WSTickets.Api.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("TicketId1")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
 
@@ -148,6 +151,8 @@ namespace WSTickets.Api.Migrations
                     b.HasIndex("ChangedById");
 
                     b.HasIndex("TicketId");
+
+                    b.HasIndex("TicketId1");
 
                     b.ToTable("StatusHistories");
                 });
@@ -285,6 +290,10 @@ namespace WSTickets.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WSTickets.Api.Models.Entities.Ticket", null)
+                        .WithMany("StatusHistory")
+                        .HasForeignKey("TicketId1");
+
                     b.Navigation("ChangedBy");
 
                     b.Navigation("Ticket");
@@ -354,6 +363,8 @@ namespace WSTickets.Api.Migrations
                     b.Navigation("Messages");
 
                     b.Navigation("StatusHistories");
+
+                    b.Navigation("StatusHistory");
                 });
 
             modelBuilder.Entity("WSTickets.Api.Models.Entities.User", b =>

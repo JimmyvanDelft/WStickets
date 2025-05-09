@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
+    x:Class="WSTickets.App.Views.LoginPage"
+    xmlns:nav="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+    nav:NavigationPage.HasNavigationBar="False"
+    >
+
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.5,0.5">
+            <GradientStop Color="#222531" Offset=".0"/>
+            <GradientStop Color="#191B27" Offset=".5"/>
+            <GradientStop Color="#0E0E1B" Offset="1.0"/>
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <Grid Padding="0" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Frame
+                Grid.Row="0"
+                Margin="20"
+                Padding="30"
+                BackgroundColor="White"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="400">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <Image Source="wikibase_contrast.png"
+                           WidthRequest="250"
+                           HorizontalOptions="Center" 
+                           Margin="20"/>
+
+                    <Label Text="Sign in to your Account"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" 
+                           HorizontalOptions="Center" />
+
+                    <Label Text="Don't have an account? Sign Up"
+                           FontSize="13"
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+
+                    <material:TextField 
+                        Title="Email"
+                        Text="{Binding Username}"/>
+
+                    <material:TextField 
+                        Title="Password"
+                        Text="{Binding Password}"
+                        IsPassword="True"
+                        />
+
+                    <Label Text="{Binding ErrorMessage}"
+                           FontSize="13"
+                           TextColor="Red"
+                           IsVisible="{Binding HasError}"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="Forgot Your Password ?"
+                           FontSize="12"
+                           TextColor="{StaticResource Primary}" 
+                           HorizontalOptions="End" />
+
+                        <Button 
+                        Text="Log In"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="12"
+                        FontSize="16"
+                        HeightRequest="50" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

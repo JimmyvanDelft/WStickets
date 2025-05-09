@@ -1,6 +1,8 @@
-﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Toolkit.Hosting;
+﻿using Microsoft.Extensions.Logging;
+using UraniumUI;
+using CommunityToolkit.Maui;
+using WSTickets.App.Views;
+using WSTickets.App.ViewModels;
 
 namespace WSTickets.App;
 
@@ -11,37 +13,28 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
-			.ConfigureSyncfusionToolkit()
-			.ConfigureMauiHandlers(handlers =>
-			{
-			})
-			.ConfigureFonts(fonts =>
-			{
+            .UseMauiCommunityToolkit()
+            .UseUraniumUI()
+            .UseUraniumUIMaterial()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("Inter-Regular.ttf", "InterRegular");
+                fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
+                fonts.AddFont("Inter-Bold.ttf", "InterBold");
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
-				fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
-			});
+                fonts.AddMaterialSymbolsFonts();
+            });
+
+        builder.Services.AddTransient<TicketListViewModel>();
+        builder.Services.AddTransient<TicketDetailViewModel>();
+        builder.Services.AddTransient<TicketListPage>();
+        builder.Services.AddTransient<TicketDetailPage>();
 
 #if DEBUG
-		builder.Logging.AddDebug();
-		builder.Services.AddLogging(configure => configure.AddDebug());
+        builder.Logging.AddDebug();
 #endif
 
-		builder.Services.AddSingleton<ProjectRepository>();
-		builder.Services.AddSingleton<TaskRepository>();
-		builder.Services.AddSingleton<CategoryRepository>();
-		builder.Services.AddSingleton<TagRepository>();
-		builder.Services.AddSingleton<SeedDataService>();
-		builder.Services.AddSingleton<ModalErrorHandler>();
-		builder.Services.AddSingleton<MainPageModel>();
-		builder.Services.AddSingleton<ProjectListPageModel>();
-		builder.Services.AddSingleton<ManageMetaPageModel>();
-
-		builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
-		builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
-		
 		return builder.Build();
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WSTickets.Api.Data;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
@@ -52,6 +53,22 @@ public class TicketsController : ControllerBase
         return Ok(tickets);
     }
 
+    [HttpGet("mine")]
+    public async Task<ActionResult<IEnumerable<Ticket>>> GetMyTickets()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+            return Unauthorized();
+
+        int userId = int.Parse(userIdClaim.Value);
+
+        var tickets = await _context.Tickets
+            .Where(t => t.ReporterId == userId || t.AssigneeId == userId)
+            .ToListAsync();
+
+        return Ok(tickets);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<TicketDto>> GetTicket(int id)
     {
@@ -93,6 +110,18 @@ public class TicketsController : ControllerBase
         _context.Tickets.Add(ticket);
         await _context.SaveChangesAsync();
 
+        // Add initial status history
+        var statusHistory = new StatusHistory
+        {
+            TicketId = ticket.Id,
+            Status = ticket.CurrentStatus,
+            Timestamp = DateTime.UtcNow,
+            ChangedById = userId
+        };
+
+        _context.StatusHistories.Add(statusHistory);
+        await _context.SaveChangesAsync();
+
         var createdTicketDto = new TicketDto
         {
             Id = ticket.Id,
@@ -108,13 +137,15 @@ public class TicketsController : ControllerBase
         return CreatedAtAction(nameof(GetTicket), new { id = ticket.Id }, createdTicketDto);
     }
 
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTicket(int id, TicketUpdateDto dto)
     {
         var ticket = await _context.Tickets.FindAsync(id);
-
         if (ticket == null)
             return NotFound();
+
+        bool statusChanged = ticket.CurrentStatus != dto.CurrentStatus;
 
         ticket.Title = dto.Title;
         ticket.Description = dto.Description;
@@ -122,6 +153,22 @@ public class TicketsController : ControllerBase
         ticket.CurrentStatus = dto.CurrentStatus;
 
         await _context.SaveChangesAsync();
+
+        if (statusChanged)
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+
+            var statusHistory = new StatusHistory
+            {
+                TicketId = ticket.Id,
+                Status = ticket.CurrentStatus,
+                Timestamp = DateTime.UtcNow,
+                ChangedById = userId
+            };
+
+            _context.StatusHistories.Add(statusHistory);
+            await _context.SaveChangesAsync();
+        }
 
         return NoContent();
     }

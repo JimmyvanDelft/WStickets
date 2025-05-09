@@ -37,22 +37,4 @@ public class StatusHistoriesController : ControllerBase
         return Ok(history);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> AddStatusHistory(int ticketId, [FromBody] StatusHistoryCreateDto dto)
-    {
-        var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
-
-        var statusHistory = new StatusHistory
-        {
-            TicketId = ticketId,
-            Status = dto.Status,
-            Timestamp = DateTime.UtcNow,
-            ChangedById = userId
-        };
-
-        _context.StatusHistories.Add(statusHistory);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetStatusHistories), new { ticketId = ticketId }, null);
-    }
 }

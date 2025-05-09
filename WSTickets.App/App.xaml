@@ -2,14 +2,32 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:WSTickets.App"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="WSTickets.App.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-                <ResourceDictionary Source="Resources/Styles/AppStyles.xaml" />
+                <ResourceDictionary x:Name="appColors" Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary x:Name="appStyles" Source="Resources/Styles/Styles.xaml" />
+
+                <material:StyleResource ColorsOverride="{x:Reference appColors}" BasedOn="{x:Reference appStyles}" />
             </ResourceDictionary.MergedDictionaries>
+            <!-- Set Inter as font -->
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="InterRegular" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="FontFamily" Value="InterRegular" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="InterSemiBold" />
+            </Style>
+            <Style TargetType="Editor">
+                <Setter Property="FontFamily" Value="InterRegular" />
+            </Style>
+            <Style TargetType="Picker">
+                <Setter Property="FontFamily" Value="InterRegular" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

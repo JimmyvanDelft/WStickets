@@ -1,0 +1,98 @@
+<ContentPage x:Class="WSTickets.App.Views.TicketDetailPage"
+            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
+            xmlns:model="clr-namespace:WSTickets.App.Models"
+            x:Name="ThisPage"
+            Title="Ticket Details"
+            x:DataType="viewmodel:TicketDetailViewModel">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="{Binding Ticket.Title}" FontSize="20" FontAttributes="Bold" />
+            <Label Text="{Binding Ticket.Description}" FontSize="14" />
+            <Label Text="Priority:" FontAttributes="Bold" />
+            <Label Text="{Binding Ticket.Priority}" />
+            <Label Text="Status:" FontAttributes="Bold" />
+            <Label Text="{Binding Ticket.CurrentStatus}" />
+
+            <!-- Attachments -->
+            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />
+            <CollectionView ItemsSource="{Binding Attachments}" ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Attachment">
+                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
+                            <VerticalStackLayout>
+                                <!-- Thumbnail -->
+                                <Image Source="{Binding FilePath}" HeightRequest="80" Aspect="AspectFit" >
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
+                                CommandParameter="{Binding FilePath}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <!-- Metadata -->
+                                <Label Text="{Binding UploadedAt}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding UploadedById}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Messages -->
+            <Label Text="Messages" FontAttributes="Bold" FontSize="Medium" />
+            <CollectionView ItemsSource="{Binding Messages}" HeightRequest="200">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Message">
+                        <!-- chat bubble -->
+                        <Frame Padding="10" CornerRadius="12" HasShadow="False">
+                            <Frame.Triggers>
+                                <!-- reporters comments go on the left, in blue -->
+                                <DataTrigger TargetType="Frame"
+                                   Binding="{Binding IsFromReporter}"
+                                   Value="True">
+                                    <Setter Property="HorizontalOptions" Value="Start" />
+                                    <Setter Property="BackgroundColor" Value="LightBlue" />
+                                </DataTrigger>
+                                <!-- others go on the right, in gray -->
+                                <DataTrigger TargetType="Frame"
+                                   Binding="{Binding IsFromReporter}"
+                                   Value="False">
+                                    <Setter Property="HorizontalOptions" Value="End" />
+                                    <Setter Property="BackgroundColor" Value="LightGray" />
+                                </DataTrigger>
+                            </Frame.Triggers>
+
+                            <VerticalStackLayout Spacing="2">
+                                <!-- message text -->
+                                <Label Text="{Binding Content}" />
+                                <!-- timestamp, small and right-aligned within its bubble -->
+                                <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
+                                 FontSize="10"
+                                 HorizontalOptions="End"
+                                 TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Status History -->
+            <Label Text="Status History" FontAttributes="Bold" FontSize="Medium" />
+            <CollectionView ItemsSource="{Binding StatusHistory}" HeightRequest="150">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:StatusHistory">
+                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Status}" />
+                                <Label Text="{Binding Timestamp}" FontSize="12" TextColor="Gray" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
