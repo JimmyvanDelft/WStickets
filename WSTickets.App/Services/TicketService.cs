@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using WSTickets.App.Models;
 
@@ -83,6 +84,41 @@ public class TicketService
         var response = await ApiClient.SendAsync(request);
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<StatusHistory>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
+    }
+
+    // in WSTickets.App.Services.TicketService.cs
+    public async Task<Ticket?> CreateTicketAsync(TicketCreateDto dto)
+    {
+        try
+        {
+            // Build the request
+            var request = new HttpRequestMessage(HttpMethod.Post, "tickets")
+            {
+                Content = JsonContent.Create(dto)
+            };
+
+            // Send (and get 401 handling too)
+            var response = await ApiClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine($"[TicketService] Create failed: {(int)response.StatusCode} – {error}");
+                return null;
+            }
+
+            // Deserialize into your Ticket model (or a TicketDto if you prefer)
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<Ticket>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[TicketService] Exception in CreateTicketAsync: {ex}");
+            return null;
+        }
     }
 
 }
