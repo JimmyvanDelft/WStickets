@@ -1,7 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using WSTickets.App.Models;
 using WSTickets.App.Services;
+using WSTickets.App.Views;
 
 namespace WSTickets.App.ViewModels;
 
@@ -33,4 +36,17 @@ public partial class TicketDetailViewModel : ObservableObject
         foreach (var status in statusHistory)
             StatusHistory.Add(status);
     }
+
+    public ICommand OpenImageCommand => new Command<string>((filePath) =>
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            return;
+
+        var currentPage = Application.Current.MainPage;
+        if (currentPage is not null)
+        {
+            var popup = new ImagePopup(filePath);
+            currentPage.ShowPopup(popup);
+        }
+    });
 }
