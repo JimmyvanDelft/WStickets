@@ -1,6 +1,7 @@
 using WSTickets.App.ViewModels;
 using WSTickets.App.Services;
 using WSTickets.App.Models;
+using WSTickets.App.Views;
 
 namespace WSTickets.App.Views;
 
@@ -36,4 +37,8 @@ public partial class TicketListPage : ContentPage
         }
     }
 
+    private async void OnNewTicketButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new NewTicketPage());
+    }
 }

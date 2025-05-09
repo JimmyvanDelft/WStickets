@@ -16,6 +16,31 @@
             <Label Text="Status:" FontAttributes="Bold" />
             <Label Text="{Binding Ticket.CurrentStatus}" />
 
+            <!-- Attachments -->
+            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />
+            <CollectionView ItemsSource="{Binding Attachments}" ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Attachment">
+                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
+                            <VerticalStackLayout>
+                                <!-- Thumbnail -->
+                                <Image Source="{Binding FilePath}" HeightRequest="80" Aspect="AspectFit" >
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
+                                CommandParameter="{Binding FilePath}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <!-- Metadata -->
+                                <Label Text="{Binding UploadedAt}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding UploadedById}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <!-- Messages -->
             <Label Text="Messages" FontAttributes="Bold" FontSize="Medium" />
             <CollectionView ItemsSource="{Binding Messages}" HeightRequest="200">
@@ -53,34 +78,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-
-            <!-- Attachments -->
-            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />
-            <CollectionView ItemsSource="{Binding Attachments}" ItemsLayout="HorizontalList">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Attachment">
-                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
-                            <VerticalStackLayout>
-                                <!-- Thumbnail -->
-                                <Image Source="{Binding FilePath}" HeightRequest="80" Aspect="AspectFit" >
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
-                                            CommandParameter="{Binding FilePath}" />
-                                    </Image.GestureRecognizers>
-                                </Image>
-
-                                <!-- Metadata -->
-                                <Label Text="{Binding UploadedAt}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
-                                <Label Text="{Binding UploadedById}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-
 
             <!-- Status History -->
             <Label Text="Status History" FontAttributes="Bold" FontSize="Medium" />

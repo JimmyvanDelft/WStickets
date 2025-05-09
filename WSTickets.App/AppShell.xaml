@@ -11,6 +11,11 @@
         <ShellContent Route="TicketListPage" ContentTemplate="{DataTemplate views:TicketListPage}" />
     </FlyoutItem>
 
+    <!--New Ticket -->
+    <FlyoutItem Title="New Ticket" Icon="add_circle" >
+        <ShellContent Route="NewTicketPage" ContentTemplate="{DataTemplate views:NewTicketPage}" />
+    </FlyoutItem>
+
     <MenuItem 
     Text="Logout"
     IconImageSource="logout"

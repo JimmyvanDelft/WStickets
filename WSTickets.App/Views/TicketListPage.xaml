@@ -7,42 +7,58 @@
              xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
              x:DataType="viewmodel:TicketListViewModel">
 
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-        <StackLayout>
-            <Label Text="No tickets assigned to you"
+    <Grid>
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <StackLayout>
+                <Label Text="No tickets assigned to you, create one by clicking on the plus button"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    TextColor="Gray"
                    FontAttributes="Italic"
                    IsVisible="{Binding NoTicketsMessageVisible}" />
 
-            <Label Text="{Binding ErrorMessage}" 
+                <Label Text="{Binding ErrorMessage}" 
                    TextColor="Red"
                    IsVisible="{Binding HasError}"
                    HorizontalOptions="Center"
                    Margin="10"/>
 
-            <CollectionView ItemsSource="{Binding Tickets}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Ticket">
-                        <Frame Margin="10" Padding="10" BorderColor="Gray" CornerRadius="8">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer 
+                <CollectionView ItemsSource="{Binding Tickets}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Ticket">
+                            <Frame Margin="10" Padding="10" BorderColor="Gray" CornerRadius="8">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketListViewModel}}, Path=GoToTicketCommand}"
                                     CommandParameter="{Binding .}" />
-                            </Frame.GestureRecognizers>
-                            <StackLayout>
-                                <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="16"/>
-                                <Label Text="{Binding Description}" FontSize="13" LineBreakMode="TailTruncation"/>
-                                <Label Text="{Binding Priority}" FontSize="12" TextColor="Purple"/>
-                                <Label Text="{Binding CurrentStatus}" FontSize="12" TextColor="DarkMagenta"/>
-                            </StackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </Frame.GestureRecognizers>
+                                <StackLayout>
+                                    <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="16"/>
+                                    <Label Text="{Binding Description}" FontSize="13" LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding Priority}" FontSize="12" TextColor="Purple"/>
+                                    <Label Text="{Binding CurrentStatus}" FontSize="12" TextColor="DarkMagenta"/>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-        </StackLayout>
-    </RefreshView>
+            </StackLayout>
+        </RefreshView>
+
+        <Button Text="+"
+                FontSize="24"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                StyleClass="Elevation2"
+                Clicked="OnNewTicketButtonClicked"/>
+
+    </Grid>
 
 </ContentPage>
