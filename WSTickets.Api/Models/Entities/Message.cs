@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WSTickets.Api.Models.Entities;
+﻿namespace WSTickets.Api.Models.Entities;
 
 public class Message
 {
@@ -15,4 +13,5 @@ public class Message
 
     public int AuthorId { get; set; }
     public User Author { get; set; }
+
 }

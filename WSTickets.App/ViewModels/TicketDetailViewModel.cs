@@ -21,10 +21,14 @@ public partial class TicketDetailViewModel : ObservableObject
     {
         Ticket = await TicketService.Instance.GetTicketByIdAsync(ticketId);
 
-        var messages = (await TicketService.Instance.GetMessagesAsync(ticketId)).OrderByDescending(m => m.Timestamp);
+        var messages = (await TicketService.Instance.GetMessagesAsync(ticketId))
+            .OrderBy(m => m.Timestamp)
+            .ToList();
         Messages.Clear();
-        foreach (var message in messages)
-            Messages.Add(message);
+        foreach (var message in messages){
+           message.IsFromReporter = (message.AuthorId == Ticket.ReporterId);
+           Messages.Add(message);
+        }
 
         var attachments = await TicketService.Instance.GetAttachmentsAsync(ticketId);
         Attachments.Clear();

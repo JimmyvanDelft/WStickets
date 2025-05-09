@@ -27,4 +27,5 @@ public class Ticket
     public string Description { get; set; }
     public TicketPriority Priority { get; set; }
     public TicketStatus CurrentStatus { get; set; }
+    public int ReporterId { get; set; }
 }
