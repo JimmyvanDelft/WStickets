@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WSTickets.Api.Data;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
@@ -40,7 +41,9 @@ public class AttachmentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> UploadAttachment(int ticketId, [FromForm] IFormFile file)
+    public async Task<ActionResult<AttachmentDto>> UploadAttachment(
+    int ticketId,
+    [FromForm] IFormFile file)
     {
         if (file == null || file.Length == 0)
             return BadRequest("No file uploaded.");
@@ -53,19 +56,22 @@ public class AttachmentsController : ControllerBase
         if (!Directory.Exists(uploadsFolder))
             Directory.CreateDirectory(uploadsFolder);
 
-        var filePath = Path.Combine(uploadsFolder, file.FileName);
+        var fileName = Path.GetFileName(file.FileName);
+        var filePathPhysical = Path.Combine(uploadsFolder, fileName);
 
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        // save
+        await using (var stream = new FileStream(filePathPhysical, FileMode.Create))
         {
             await file.CopyToAsync(stream);
         }
 
-        var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
+        // create and save entity
         var attachment = new Attachment
         {
             TicketId = ticketId,
-            FilePath = $"/uploads/{file.FileName}",
+            FilePath = $"/uploads/{fileName}",
             FileType = file.ContentType,
             UploadedAt = DateTime.UtcNow,
             UploadedById = userId
@@ -74,7 +80,23 @@ public class AttachmentsController : ControllerBase
         _context.Attachments.Add(attachment);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetAttachments), new { ticketId = ticketId }, null);
+        var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+        // project to DTO
+        var response = new AttachmentDto
+        {
+            Id = attachment.Id,
+            FilePath = baseUrl + attachment.FilePath,
+            FileType = attachment.FileType,
+            UploadedAt = attachment.UploadedAt,
+            UploadedById = attachment.UploadedById
+        };
+
+        return CreatedAtAction(
+            nameof(GetAttachments),
+            new { ticketId },
+            response
+        );
     }
 
 }

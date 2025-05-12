@@ -24,7 +24,12 @@
                         <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
                             <VerticalStackLayout>
                                 <!-- Thumbnail -->
-                                <Image Source="{Binding FilePath}" HeightRequest="80" Aspect="AspectFit" >
+                                <Image HeightRequest="80" Aspect="AspectFit" >
+                                    <Image.Source>
+                                        <UriImageSource Uri="{Binding FilePath}"
+                                          CachingEnabled="True"
+                                          CacheValidity="1:00:00" />
+                                    </Image.Source>
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer 
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
@@ -49,14 +54,12 @@
                         <!-- chat bubble -->
                         <Frame Padding="10" CornerRadius="12" HasShadow="False">
                             <Frame.Triggers>
-                                <!-- reporters comments go on the left, in blue -->
                                 <DataTrigger TargetType="Frame"
                                    Binding="{Binding IsFromReporter}"
                                    Value="True">
                                     <Setter Property="HorizontalOptions" Value="Start" />
                                     <Setter Property="BackgroundColor" Value="LightBlue" />
                                 </DataTrigger>
-                                <!-- others go on the right, in gray -->
                                 <DataTrigger TargetType="Frame"
                                    Binding="{Binding IsFromReporter}"
                                    Value="False">
@@ -68,8 +71,8 @@
                             <VerticalStackLayout Spacing="2">
                                 <!-- message text -->
                                 <Label Text="{Binding Content}" />
-                                <!-- timestamp, small and right-aligned within its bubble -->
-                                <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}"
+                                <!-- timestamp -->
+                                <Label Text="{Binding Timestamp, StringFormat='{0:dd-MM-yyyy HH:mm}'}"
                                  FontSize="10"
                                  HorizontalOptions="End"
                                  TextColor="Gray"/>
@@ -78,6 +81,22 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <HorizontalStackLayout 
+                    Grid.Row="2"
+                    Spacing="10"
+                    VerticalOptions="End">
+                <Entry
+                    Text="{Binding NewMessageContent}"
+                    Placeholder="Type your message..." />
+                <Button
+                    Text="Send"
+                    Command="{Binding SendMessageCommand}"
+                    IsEnabled="{Binding IsSendEnabled}" />
+                <Button
+                    Text="Add attachment"
+                    Command="{Binding AddAttachmentCommand}" />
+            </HorizontalStackLayout>
 
             <!-- Status History -->
             <Label Text="Status History" FontAttributes="Bold" FontSize="Medium" />

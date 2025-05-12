@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WSTickets.App.Models;
@@ -13,15 +14,32 @@ public partial class TicketDetailViewModel : ObservableObject
     [ObservableProperty]
     private Ticket ticket;
 
+    [ObservableProperty]
+    private string newMessageContent;
+
+    public bool IsSendEnabled => !string.IsNullOrWhiteSpace(NewMessageContent);
+
     public ObservableCollection<Message> Messages { get; } = new();
     public ObservableCollection<Attachment> Attachments { get; } = new();
     public ObservableCollection<StatusHistory> StatusHistory { get; } = new();
+
+    public TicketDetailViewModel()
+    {
+        SendMessageCommand = new AsyncRelayCommand(SendMessageAsync, () => IsSendEnabled);
+        AddAttachmentCommand = new AsyncRelayCommand(AddAttachmentAsync);
+    }
+
+    partial void OnNewMessageContentChanged(string value)
+    {
+        // re-evaluate button enablement
+        SendMessageCommand.NotifyCanExecuteChanged();
+    }
 
     public async Task LoadTicketAsync(int ticketId)
     {
         Ticket = await TicketService.Instance.GetTicketByIdAsync(ticketId);
 
-        var messages = (await TicketService.Instance.GetMessagesAsync(ticketId))
+        var messages = (await ChatService.Instance.GetMessagesAsync(ticketId))
             .OrderBy(m => m.Timestamp)
             .ToList();
         Messages.Clear();
@@ -53,4 +71,64 @@ public partial class TicketDetailViewModel : ObservableObject
             currentPage.ShowPopup(popup);
         }
     });
+    public IAsyncRelayCommand SendMessageCommand { get; }
+    public IAsyncRelayCommand AddAttachmentCommand { get; }
+    private async Task SendMessageAsync()
+    {
+        if (string.IsNullOrWhiteSpace(NewMessageContent))
+            return;
+
+        var sent = await ChatService.Instance.AddMessageAsync(
+            Ticket.Id,
+            NewMessageContent.Trim(),
+            isInternal: false);
+
+        if (sent != null)
+        {
+            sent.IsFromReporter = sent.AuthorId == Ticket.ReporterId;
+            Messages.Add(sent);
+
+            // clear the draft
+            NewMessageContent = string.Empty;
+        }
+        else
+        {
+            await Application.Current.MainPage
+                .DisplayAlert("Error", "Could not send message", "OK");
+        }
+    }
+    private async Task AddAttachmentAsync()
+    {
+        try
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                FileTypes = FilePickerFileType.Images,
+                PickerTitle = "Select a file to attach"
+            });
+
+            if (result == null)
+                return;
+
+            // upload via ChatService
+            var attached = await ChatService.Instance
+                               .AddAttachmentAsync(Ticket.Id, result.FullPath);
+
+            if (attached != null)
+            {
+                // update the Attachments collection
+                Attachments.Add(attached);
+            }
+            else
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Error", "Could not upload attachment.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage
+                .DisplayAlert("Error", $"Attachment failed: {ex.Message}", "OK");
+        }
+    }
 }

@@ -29,3 +29,11 @@ public class Ticket
     public TicketStatus CurrentStatus { get; set; }
     public int ReporterId { get; set; }
 }
+
+public class TicketCreateDto
+{
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public TicketPriority Priority { get; set; }
+    public int CompanyId { get; set; }
+}
