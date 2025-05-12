@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WSTickets.Api.Data;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
@@ -38,9 +39,9 @@ public class MessagesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMessage(int ticketId, [FromBody] MessageCreateDto dto)
+    public async Task<ActionResult<MessageDto>> AddMessage(int ticketId, [FromBody] MessageCreateDto dto)
     {
-        var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value);
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         var message = new Message
         {
@@ -54,6 +55,20 @@ public class MessagesController : ControllerBase
         _context.Messages.Add(message);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetMessages), new { ticketId = ticketId }, null);
+        var response = new MessageDto
+        {
+            Id = message.Id,
+            Content = message.Content,
+            IsInternal = message.IsInternal,
+            Timestamp = message.Timestamp,
+            AuthorId = message.AuthorId
+        };
+
+        return CreatedAtAction(
+            nameof(GetMessages),
+            new { ticketId },
+            response
+        );
     }
+
 }
