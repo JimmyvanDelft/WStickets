@@ -24,7 +24,12 @@
                         <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
                             <VerticalStackLayout>
                                 <!-- Thumbnail -->
-                                <Image Source="{Binding FilePath}" HeightRequest="80" Aspect="AspectFit" >
+                                <Image HeightRequest="80" Aspect="AspectFit" >
+                                    <Image.Source>
+                                        <UriImageSource Uri="{Binding FilePath}"
+                                          CachingEnabled="True"
+                                          CacheValidity="1:00:00" />
+                                    </Image.Source>
                                     <Image.GestureRecognizers>
                                         <TapGestureRecognizer 
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
@@ -88,6 +93,9 @@
                     Text="Send"
                     Command="{Binding SendMessageCommand}"
                     IsEnabled="{Binding IsSendEnabled}" />
+                <Button
+                    Text="Add attachment"
+                    Command="{Binding AddAttachmentCommand}" />
             </HorizontalStackLayout>
 
             <!-- Status History -->

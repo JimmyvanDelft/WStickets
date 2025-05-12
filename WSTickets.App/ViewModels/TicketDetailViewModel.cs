@@ -26,6 +26,7 @@ public partial class TicketDetailViewModel : ObservableObject
     public TicketDetailViewModel()
     {
         SendMessageCommand = new AsyncRelayCommand(SendMessageAsync, () => IsSendEnabled);
+        AddAttachmentCommand = new AsyncRelayCommand(AddAttachmentAsync);
     }
 
     partial void OnNewMessageContentChanged(string value)
@@ -71,6 +72,7 @@ public partial class TicketDetailViewModel : ObservableObject
         }
     });
     public IAsyncRelayCommand SendMessageCommand { get; }
+    public IAsyncRelayCommand AddAttachmentCommand { get; }
     private async Task SendMessageAsync()
     {
         if (string.IsNullOrWhiteSpace(NewMessageContent))
@@ -93,6 +95,40 @@ public partial class TicketDetailViewModel : ObservableObject
         {
             await Application.Current.MainPage
                 .DisplayAlert("Error", "Could not send message", "OK");
+        }
+    }
+    private async Task AddAttachmentAsync()
+    {
+        try
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                FileTypes = FilePickerFileType.Images,
+                PickerTitle = "Select a file to attach"
+            });
+
+            if (result == null)
+                return;
+
+            // upload via ChatService
+            var attached = await ChatService.Instance
+                               .AddAttachmentAsync(Ticket.Id, result.FullPath);
+
+            if (attached != null)
+            {
+                // update the Attachments collection
+                Attachments.Add(attached);
+            }
+            else
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Error", "Could not upload attachment.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage
+                .DisplayAlert("Error", $"Attachment failed: {ex.Message}", "OK");
         }
     }
 }
