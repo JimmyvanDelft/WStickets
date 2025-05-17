@@ -17,7 +17,21 @@ public partial class TicketDetailViewModel : ObservableObject
     [ObservableProperty]
     private string newMessageContent;
 
+    [ObservableProperty]
+    private TicketPriority selectedPriority;
+
+    [ObservableProperty]
+    private TicketStatus selectedStatus;
+
+
     public bool IsSendEnabled => !string.IsNullOrWhiteSpace(NewMessageContent);
+    public bool CanEditTicket => AuthService.Instance.CurrentUserRole is "Admin" or "Manager" or "Support";
+
+
+
+    public List<TicketPriority> PriorityOptions => Enum.GetValues(typeof(TicketPriority)).Cast<TicketPriority>().ToList();
+    public List<TicketStatus> StatusOptions => Enum.GetValues(typeof(TicketStatus)).Cast<TicketStatus>().ToList();
+
 
     public ObservableCollection<Message> Messages { get; } = new();
     public ObservableCollection<Attachment> Attachments { get; } = new();
@@ -38,6 +52,9 @@ public partial class TicketDetailViewModel : ObservableObject
     public async Task LoadTicketAsync(int ticketId)
     {
         Ticket = await TicketService.Instance.GetTicketByIdAsync(ticketId);
+
+        SelectedPriority = Ticket.Priority;
+        SelectedStatus = Ticket.CurrentStatus;
 
         var messages = (await ChatService.Instance.GetMessagesAsync(ticketId))
             .OrderBy(m => m.Timestamp)

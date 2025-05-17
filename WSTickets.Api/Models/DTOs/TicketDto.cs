@@ -24,8 +24,8 @@ public class TicketCreateDto
 
 public class TicketUpdateDto
 {
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public TicketPriority Priority { get; set; }
-    public TicketStatus CurrentStatus { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public TicketPriority? Priority { get; set; }
+    public TicketStatus? CurrentStatus { get; set; }
 }

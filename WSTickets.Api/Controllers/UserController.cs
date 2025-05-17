@@ -5,6 +5,7 @@ using WSTickets.Api.Data;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
 using BCrypt.Net;
+using System.Security.Claims;
 
 namespace WSTickets.Api.Controllers;
 

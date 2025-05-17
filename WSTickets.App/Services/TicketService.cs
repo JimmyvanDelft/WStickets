@@ -78,7 +78,6 @@ public class TicketService
         return JsonSerializer.Deserialize<List<StatusHistory>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
     }
 
-    // in WSTickets.App.Services.TicketService.cs
     public async Task<Ticket?> CreateTicketAsync(TicketCreateDto dto)
     {
         try

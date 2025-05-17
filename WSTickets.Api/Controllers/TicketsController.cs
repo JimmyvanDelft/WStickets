@@ -145,12 +145,22 @@ public class TicketsController : ControllerBase
         if (ticket == null)
             return NotFound();
 
-        bool statusChanged = ticket.CurrentStatus != dto.CurrentStatus;
+        bool statusChanged = false;
 
-        ticket.Title = dto.Title;
-        ticket.Description = dto.Description;
-        ticket.Priority = dto.Priority;
-        ticket.CurrentStatus = dto.CurrentStatus;
+        if (dto.Title != null)
+            ticket.Title = dto.Title;
+
+        if (dto.Description != null)
+            ticket.Description = dto.Description;
+
+        if (dto.Priority.HasValue)
+            ticket.Priority = dto.Priority.Value;
+
+        if (dto.CurrentStatus.HasValue && ticket.CurrentStatus != dto.CurrentStatus.Value)
+        {
+            statusChanged = true;
+            ticket.CurrentStatus = dto.CurrentStatus.Value;
+        }
 
         await _context.SaveChangesAsync();
 
@@ -172,6 +182,7 @@ public class TicketsController : ControllerBase
 
         return NoContent();
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTicket(int id)

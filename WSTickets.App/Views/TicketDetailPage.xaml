@@ -2,6 +2,7 @@
             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
+            xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
             xmlns:model="clr-namespace:WSTickets.App.Models"
             x:Name="ThisPage"
             Title="Ticket Details"
@@ -12,9 +13,25 @@
             <Label Text="{Binding Ticket.Title}" FontSize="20" FontAttributes="Bold" />
             <Label Text="{Binding Ticket.Description}" FontSize="14" />
             <Label Text="Priority:" FontAttributes="Bold" />
-            <Label Text="{Binding Ticket.Priority}" />
+
+            <!-- If CanEditTicket is true, show dropdown -->
+            <material:DropdownField x:Name="PriorityDropdown"
+                        ItemsSource="{Binding PriorityOptions}"
+                        SelectedItem="{Binding SelectedPriority}"
+                        IsVisible="{Binding CanEditTicket}" />
+
+            <!-- Otherwise, show readonly text -->
+            <Label Text="{Binding Ticket.Priority}" 
+       IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
+
             <Label Text="Status:" FontAttributes="Bold" />
-            <Label Text="{Binding Ticket.CurrentStatus}" />
+            <material:DropdownField x:Name="StatusDropdown"
+                        ItemsSource="{Binding StatusOptions}"
+                        SelectedItem="{Binding SelectedStatus}"
+                        IsVisible="{Binding CanEditTicket}" />
+            <Label Text="{Binding Ticket.CurrentStatus}" 
+       IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
+
 
             <!-- Attachments -->
             <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />

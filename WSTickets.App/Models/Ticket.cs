@@ -37,3 +37,9 @@ public class TicketCreateDto
     public TicketPriority Priority { get; set; }
     public int CompanyId { get; set; }
 }
+
+public static class TicketEnums
+{
+    public static List<TicketPriority> Priorities => Enum.GetValues(typeof(TicketPriority)).Cast<TicketPriority>().ToList();
+    public static List<TicketStatus> Statuses => Enum.GetValues(typeof(TicketStatus)).Cast<TicketStatus>().ToList();
+}

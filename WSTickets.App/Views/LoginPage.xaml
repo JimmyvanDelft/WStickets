@@ -2,6 +2,7 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:helpers="clr-namespace:WSTickets.App.Helpers"
     xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
     x:Class="WSTickets.App.Views.LoginPage"
     xmlns:nav="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
