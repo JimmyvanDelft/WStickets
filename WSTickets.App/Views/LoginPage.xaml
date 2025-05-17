@@ -81,6 +81,19 @@
                         FontSize="16"
                         HeightRequest="50" />
 
+                    <Grid
+                      IsVisible="{Binding IsBusy}"
+                      BackgroundColor="Transparent"
+                      VerticalOptions="Fill"
+                      HorizontalOptions="Fill">
+                      <ActivityIndicator
+                        IsRunning="True"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        WidthRequest="50"
+                        HeightRequest="50"/>
+                    </Grid>
+
                 </VerticalStackLayout>
             </Frame>
         </Grid>

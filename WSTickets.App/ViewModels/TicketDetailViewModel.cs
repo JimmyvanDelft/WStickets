@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Windows.Input;
 using WSTickets.App.Models;
 using WSTickets.App.Services;
@@ -48,6 +51,51 @@ public partial class TicketDetailViewModel : ObservableObject
         // re-evaluate button enablement
         SendMessageCommand.NotifyCanExecuteChanged();
     }
+
+    partial void OnSelectedStatusChanged(TicketStatus value)
+    {
+        if (Ticket != null && Ticket.CurrentStatus != value)
+        {
+            _ = UpdateTicketFieldAsync(status: value);
+        }
+    }
+
+    partial void OnSelectedPriorityChanged(TicketPriority value)
+    {
+        if (Ticket != null && Ticket.Priority != value)
+        {
+            _ = UpdateTicketFieldAsync(priority: value);
+        }
+    }
+
+    private async Task UpdateTicketFieldAsync(TicketPriority? priority = null, TicketStatus? status = null)
+    {
+        if (Ticket == null)
+            return;
+
+        var request = new
+        {
+            Title = (string?)null,
+            Description = (string?)null,
+            Priority = priority,
+            CurrentStatus = status
+        };
+
+        var result = await TicketService.Instance.UpdateTicketPartialAsync(Ticket.Id, request);
+
+        if (!result)
+        {
+            await Application.Current.MainPage.DisplayAlert("Update Failed", "Could not update ticket", "OK");
+        }
+        else
+        {
+            if (priority.HasValue)
+                Ticket.Priority = priority.Value;
+            if (status.HasValue)
+                Ticket.CurrentStatus = status.Value;
+        }
+    }
+
 
     public async Task LoadTicketAsync(int ticketId)
     {

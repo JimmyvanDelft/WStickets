@@ -15,20 +15,22 @@
             <Label Text="Priority:" FontAttributes="Bold" />
 
             <!-- If CanEditTicket is true, show dropdown -->
-            <material:DropdownField x:Name="PriorityDropdown"
-                        ItemsSource="{Binding PriorityOptions}"
-                        SelectedItem="{Binding SelectedPriority}"
-                        IsVisible="{Binding CanEditTicket}" />
+            <material:DropdownField
+            x:Name="PriorityDropdown"
+            ItemsSource="{Binding PriorityOptions}"
+            SelectedItem="{Binding SelectedPriority, Mode=TwoWay}"
+            IsVisible="{Binding CanEditTicket}" />
 
             <!-- Otherwise, show readonly text -->
             <Label Text="{Binding Ticket.Priority}" 
        IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 
             <Label Text="Status:" FontAttributes="Bold" />
-            <material:DropdownField x:Name="StatusDropdown"
-                        ItemsSource="{Binding StatusOptions}"
-                        SelectedItem="{Binding SelectedStatus}"
-                        IsVisible="{Binding CanEditTicket}" />
+            <material:DropdownField
+                x:Name="StatusDropdown"
+                ItemsSource="{Binding StatusOptions}"
+                SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                IsVisible="{Binding CanEditTicket}" />
             <Label Text="{Binding Ticket.CurrentStatus}" 
        IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 

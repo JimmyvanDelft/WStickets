@@ -112,4 +112,27 @@ public class TicketService
         }
     }
 
+    public async Task<bool> UpdateTicketPartialAsync(int ticketId, object partialDto)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, $"tickets/{ticketId}")
+            {
+                Content = JsonContent.Create(partialDto, options: new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                })
+            };
+
+            var response = await ApiClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[TicketService] Update failed: {ex.Message}");
+            return false;
+        }
+    }
+
 }
