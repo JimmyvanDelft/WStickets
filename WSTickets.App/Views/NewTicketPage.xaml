@@ -29,6 +29,29 @@
                 ItemsSource="{Binding Priorities}"
                 SelectedItem="{Binding SelectedPriority}" />
 
+            <!-- Add Screenshot button -->
+            <Button
+          Text="Add Screenshot"
+          Command="{Binding AddScreenshotCommand}"
+          HeightRequest="50"
+          CornerRadius="12" />
+
+            <!-- Preview of pending attachments -->
+            <CollectionView
+          ItemsSource="{Binding AttachmentPreviews}"
+          ItemsLayout="HorizontalList"
+          HeightRequest="100">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="ImageSource">
+                        <Frame Padding="0" HasShadow="False" CornerRadius="8" HeightRequest="80" WidthRequest="80">
+                            <Image
+                  Source="{Binding .}"
+                  Aspect="AspectFill"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <!-- Submit button -->
             <Button
                 Text="Create Ticket"

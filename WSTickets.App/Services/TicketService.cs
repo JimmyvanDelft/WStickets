@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WSTickets.App.Models;
+using System.Net.Http.Headers;
 
 namespace WSTickets.App.Services;
 
@@ -135,4 +136,44 @@ public class TicketService
         }
     }
 
+    public async Task<bool> UploadAttachmentAsync(
+    int ticketId,
+    Stream fileStream,
+    string fileName,
+    string contentType)
+    {
+        try
+        {
+            var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(fileStream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            content.Add(fileContent, "file", fileName);
+
+            var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"tickets/{ticketId}/attachments")
+            {
+                Content = content
+            };
+
+            var response = await ApiClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine(
+                    $"[TicketService] UploadAttachment failed: {response.StatusCode} – {error}"
+                );
+            }
+
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"[TicketService] Exception in UploadAttachmentAsync: {ex}"
+            );
+            return false;
+        }
+    }
 }

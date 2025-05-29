@@ -12,7 +12,7 @@
       Stroke="Gray"
       StrokeThickness="0.2"
       Padding="2"
-      AbsoluteLayout.LayoutBounds="0.5,0.5,0.95,0.95"
+      AbsoluteLayout.LayoutBounds="0.5,0.5,0.99,0.99"
       AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
       >
             <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" >
