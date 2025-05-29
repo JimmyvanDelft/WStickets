@@ -16,6 +16,7 @@
             <Label
                 Text="{Binding Ticket.Title}"
                 FontSize="20"
+                TextColor="Black"
                 FontAttributes="Bold" />
             <Label
                 Text="{Binding Ticket.Description}"
@@ -23,7 +24,8 @@
                 TextColor="Gray" />
 
             <!-- Priority -->
-            <Label Text="Priority:" FontAttributes="Bold" />
+            <Label Text="Priority:" FontAttributes="Bold" 
+                TextColor="Black"/>
             <material:DropdownField
                 x:Name="PriorityDropdown"
                 ItemsSource="{Binding PriorityOptions}"
@@ -35,7 +37,8 @@
                 IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 
             <!-- Status -->
-            <Label Text="Status:" FontAttributes="Bold" />
+            <Label Text="Status:" FontAttributes="Bold" 
+                TextColor="Black"/>
             <material:DropdownField
                 x:Name="StatusDropdown"
                 ItemsSource="{Binding StatusOptions}"
@@ -47,7 +50,8 @@
                 IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 
             <!-- Attachments -->
-            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />
+            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium"
+                TextColor="Black" />
             <CollectionView ItemsSource="{Binding Attachments}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" />
@@ -92,7 +96,8 @@
             </CollectionView>
 
             <!-- Messages -->
-            <Label Text="Messages" FontAttributes="Bold" FontSize="Medium" />
+            <Label Text="Messages" FontAttributes="Bold" FontSize="Medium"
+                TextColor="Black" />
             <CollectionView ItemsSource="{Binding Messages}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Message">
@@ -182,6 +187,7 @@
             <!-- Status History -->
             <Label Text="Status History"
                FontAttributes="Bold"
+                TextColor="Black"
                FontSize="Medium" />
 
             <CollectionView
