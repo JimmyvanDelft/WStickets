@@ -9,6 +9,7 @@ using WSTickets.Api.Data;
 using WSTickets.Api.Models;
 using WSTickets.Api.Models.DTOs;
 using WSTickets.Api.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WSTickets.Api.Controllers;
 
@@ -40,6 +41,23 @@ public class AuthController : ControllerBase
         var token = GenerateToken(user);
 
         return Ok(new { token });
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult GetCurrentUser()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (userId == null || role == null)
+            return Unauthorized();
+
+        return Ok(new
+        {
+            UserId = int.Parse(userId),
+            Role = role
+        });
     }
 
     private string GenerateToken(User user)

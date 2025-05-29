@@ -50,9 +50,40 @@ public class AuthService
 
         ApiClient.SetAuthToken(result.Token);
 
+        LoadCurrentUserAsync();
+
         return (true, string.Empty);
     }
 
+    public string? CurrentUserRole { get; private set; }
+    public int? CurrentUserId { get; private set; }
+
+    public async Task<bool> LoadCurrentUserAsync()
+    {
+        try
+        {
+            var response = await ApiClient.Client.GetAsync("auth/me");
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            var json = await response.Content.ReadAsStringAsync();
+            var data = JsonSerializer.Deserialize<UserInfoDto>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (data is null) return false;
+
+            CurrentUserId = data.UserId;
+            CurrentUserRole = data.Role;
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     public async Task<bool> IsLoggedInAsync()
     {
@@ -63,6 +94,8 @@ public class AuthService
             ApiClient.SetAuthToken(token);
             return true;
         }
+
+        LoadCurrentUserAsync();
 
         return false;
     }

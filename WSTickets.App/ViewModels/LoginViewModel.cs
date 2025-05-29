@@ -19,29 +19,42 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool hasError;
 
+    [ObservableProperty] 
+    private bool isBusy;
+
     public LoginViewModel()
     {
-        LoginCommand = new AsyncRelayCommand(Login);
+        LoginCommand = new AsyncRelayCommand(LoginAsync, () => !IsBusy);
     }
 
     public IAsyncRelayCommand LoginCommand { get; }
 
-    private async Task Login()
+    private async Task LoginAsync()
     {
-        var (success, errorMessage) = await AuthService.Instance.LoginAsync(Username, Password);
+        if (IsBusy) return;
+        IsBusy = true;
+        LoginCommand.NotifyCanExecuteChanged();
 
-        System.Diagnostics.Debug.WriteLine($"[LoginViewModel] Login success: {success}, error: {errorMessage}");
-
-        if (success)
+        try
         {
-            HasError = false;
-            App.NavigateToShell();
-            await Shell.Current.GoToAsync("//TicketListPage");
+            var (success, errorMessage) = await AuthService.Instance.LoginAsync(Username, Password);
+
+            if (success)
+            {
+                HasError = false;
+                App.NavigateToShell();
+                await Shell.Current.GoToAsync("//TicketListPage");
+            }
+            else
+            {
+                ErrorMessage = errorMessage;
+                HasError = true;
+            }
         }
-        else
+        finally
         {
-            ErrorMessage = errorMessage;
-            HasError = true;
+            IsBusy = false;
+            LoginCommand.NotifyCanExecuteChanged();
         }
     }
 }

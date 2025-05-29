@@ -78,7 +78,6 @@ public class TicketService
         return JsonSerializer.Deserialize<List<StatusHistory>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new();
     }
 
-    // in WSTickets.App.Services.TicketService.cs
     public async Task<Ticket?> CreateTicketAsync(TicketCreateDto dto)
     {
         try
@@ -110,6 +109,29 @@ public class TicketService
         {
             System.Diagnostics.Debug.WriteLine($"[TicketService] Exception in CreateTicketAsync: {ex}");
             return null;
+        }
+    }
+
+    public async Task<bool> UpdateTicketPartialAsync(int ticketId, object partialDto)
+    {
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, $"tickets/{ticketId}")
+            {
+                Content = JsonContent.Create(partialDto, options: new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                })
+            };
+
+            var response = await ApiClient.SendAsync(request);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[TicketService] Update failed: {ex.Message}");
+            return false;
         }
     }
 

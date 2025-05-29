@@ -1,91 +1,177 @@
-<ContentPage x:Class="WSTickets.App.Views.TicketDetailPage"
-            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
-            xmlns:model="clr-namespace:WSTickets.App.Models"
-            x:Name="ThisPage"
-            Title="Ticket Details"
-            x:DataType="viewmodel:TicketDetailViewModel">
+<ContentPage
+    x:Class="WSTickets.App.Views.TicketDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:WSTickets.App.ViewModels"
+    xmlns:material="clr-namespace:UraniumUI.Material.Controls;assembly=UraniumUI.Material"
+    xmlns:model="clr-namespace:WSTickets.App.Models"
+    x:Name="ThisPage"
+    Title="{Binding Ticket.Id, StringFormat='Ticket #{0}'}"
+    x:DataType="viewmodel:TicketDetailViewModel">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="{Binding Ticket.Title}" FontSize="20" FontAttributes="Bold" />
-            <Label Text="{Binding Ticket.Description}" FontSize="14" />
-            <Label Text="Priority:" FontAttributes="Bold" />
-            <Label Text="{Binding Ticket.Priority}" />
-            <Label Text="Status:" FontAttributes="Bold" />
-            <Label Text="{Binding Ticket.CurrentStatus}" />
+        <VerticalStackLayout Padding="20,0,20,20" Spacing="12">
+
+            <!-- Ticket Info -->
+            <Label
+                Text="{Binding Ticket.Title}"
+                FontSize="20"
+                TextColor="Black"
+                FontAttributes="Bold" />
+            <Label
+                Text="{Binding Ticket.Description}"
+                FontSize="14"
+                TextColor="Gray" />
+
+            <!-- Priority -->
+            <Label Text="Priority:" FontAttributes="Bold" 
+                TextColor="Black"/>
+            <material:DropdownField
+                x:Name="PriorityDropdown"
+                ItemsSource="{Binding PriorityOptions}"
+                SelectedItem="{Binding SelectedPriority, Mode=TwoWay}"
+                IsVisible="{Binding CanEditTicket}" />
+            <Label
+                Text="{Binding Ticket.Priority}"
+                TextColor="Gray"
+                IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
+
+            <!-- Status -->
+            <Label Text="Status:" FontAttributes="Bold" 
+                TextColor="Black"/>
+            <material:DropdownField
+                x:Name="StatusDropdown"
+                ItemsSource="{Binding StatusOptions}"
+                SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                IsVisible="{Binding CanEditTicket}" />
+            <Label
+                Text="{Binding Ticket.CurrentStatus}"
+                TextColor="Gray"
+                IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 
             <!-- Attachments -->
-            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium" />
-            <CollectionView ItemsSource="{Binding Attachments}" ItemsLayout="HorizontalList">
+            <Label Text="Attachments" FontAttributes="Bold" FontSize="Medium"
+                TextColor="Black" />
+            <CollectionView ItemsSource="{Binding Attachments}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Attachment">
-                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6" HorizontalOptions="Start">
-                            <VerticalStackLayout>
-                                <!-- Thumbnail -->
-                                <Image HeightRequest="80" Aspect="AspectFit" >
+                        <VerticalStackLayout WidthRequest="120" HorizontalOptions="Center">
+                            <Frame
+                                Padding="0"
+                                CornerRadius="16"
+                                HeightRequest="120"
+                                WidthRequest="120"
+                                BorderColor="Transparent"
+                                HorizontalOptions="Center">
+                                <Image
+                                    Aspect="AspectFit"
+                                    HeightRequest="120"
+                                    WidthRequest="120">
                                     <Image.Source>
-                                        <UriImageSource Uri="{Binding FilePath}"
-                                          CachingEnabled="True"
-                                          CacheValidity="1:00:00" />
+                                        <UriImageSource
+                                            Uri="{Binding FilePath}"
+                                            CachingEnabled="True"
+                                            CacheValidity="1:00:00" />
                                     </Image.Source>
                                     <Image.GestureRecognizers>
-                                        <TapGestureRecognizer 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}" 
-                                CommandParameter="{Binding FilePath}" />
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:TicketDetailViewModel}}, Path=OpenImageCommand}"
+                                            CommandParameter="{Binding FilePath}" />
                                     </Image.GestureRecognizers>
                                 </Image>
-
-                                <!-- Metadata -->
-                                <Label Text="{Binding UploadedAt}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
-                                <Label Text="{Binding UploadedById}" FontSize="12" TextColor="Gray" LineBreakMode="TailTruncation" />
-                            </VerticalStackLayout>
-                        </Frame>
+                            </Frame>
+                            <Label
+                                Text="{Binding UploadedAt, StringFormat='{0:dd-MM-yyyy HH:mm}'}"
+                                Padding="0,8,0,0"
+                                FontSize="10"
+                                TextColor="Gray"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="TailTruncation" />
+                        </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
             <!-- Messages -->
-            <Label Text="Messages" FontAttributes="Bold" FontSize="Medium" />
-            <CollectionView ItemsSource="{Binding Messages}" HeightRequest="200">
+            <Label Text="Messages" FontAttributes="Bold" FontSize="Medium"
+                TextColor="Black" />
+            <CollectionView ItemsSource="{Binding Messages}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Message">
-                        <!-- chat bubble -->
-                        <Frame Padding="10" CornerRadius="12" HasShadow="False">
-                            <Frame.Triggers>
-                                <DataTrigger TargetType="Frame"
-                                   Binding="{Binding IsFromReporter}"
-                                   Value="True">
-                                    <Setter Property="HorizontalOptions" Value="Start" />
-                                    <Setter Property="BackgroundColor" Value="LightBlue" />
+                        <HorizontalStackLayout Padding="0,10" Spacing="5">
+                            <HorizontalStackLayout.Triggers>
+                                <DataTrigger
+                                    TargetType="HorizontalStackLayout"
+                                    Binding="{Binding IsFromReporter}"
+                                    Value="False">
+                                    <Setter Property="FlowDirection" Value="RightToLeft" />
                                 </DataTrigger>
-                                <DataTrigger TargetType="Frame"
-                                   Binding="{Binding IsFromReporter}"
-                                   Value="False">
-                                    <Setter Property="HorizontalOptions" Value="End" />
-                                    <Setter Property="BackgroundColor" Value="LightGray" />
-                                </DataTrigger>
-                            </Frame.Triggers>
+                            </HorizontalStackLayout.Triggers>
 
-                            <VerticalStackLayout Spacing="2">
-                                <!-- message text -->
-                                <Label Text="{Binding Content}" />
-                                <!-- timestamp -->
-                                <Label Text="{Binding Timestamp, StringFormat='{0:dd-MM-yyyy HH:mm}'}"
-                                 FontSize="10"
-                                 HorizontalOptions="End"
-                                 TextColor="Gray"/>
+                            <Image
+                                HeightRequest="36"
+                                WidthRequest="36"
+                                VerticalOptions="Start"
+                                Aspect="AspectFill">
+                                <Image.Clip>
+                                    <EllipseGeometry
+                                        Center="18,18"
+                                        RadiusX="18"
+                                        RadiusY="18" />
+                                </Image.Clip>
+                                <Image.Triggers>
+                                    <DataTrigger
+                                        TargetType="Image"
+                                        Binding="{Binding IsFromReporter}"
+                                        Value="True">
+                                        <Setter Property="Source" Value="reporter_profile.png" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        TargetType="Image"
+                                        Binding="{Binding IsFromReporter}"
+                                        Value="False">
+                                        <Setter Property="Source" Value="developer_profile.png" />
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+
+                            <VerticalStackLayout
+                                HorizontalOptions="FillAndExpand"
+                                Spacing="4"
+                                VerticalOptions="Start">
+                                <Frame Padding="10" CornerRadius="12" HasShadow="False">
+                                    <Frame.Triggers>
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding IsFromReporter}"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#DCF2FF" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding IsFromReporter}"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="#E6E6E6" />
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <Label Text="{Binding Content}" FontSize="13" />
+                                </Frame>
+                                <Label
+                                    Text="{Binding Timestamp, StringFormat='{0:t}'}"
+                                    FontSize="10"
+                                    TextColor="Gray"
+                                    HorizontalOptions="EndAndExpand" />
                             </VerticalStackLayout>
-                        </Frame>
+                        </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <HorizontalStackLayout 
-                    Grid.Row="2"
-                    Spacing="10"
-                    VerticalOptions="End">
+            <!-- New message input -->
+            <HorizontalStackLayout Spacing="10" VerticalOptions="End">
                 <Entry
                     Text="{Binding NewMessageContent}"
                     Placeholder="Type your message..." />
@@ -99,19 +185,52 @@
             </HorizontalStackLayout>
 
             <!-- Status History -->
-            <Label Text="Status History" FontAttributes="Bold" FontSize="Medium" />
-            <CollectionView ItemsSource="{Binding StatusHistory}" HeightRequest="150">
+            <Label Text="Status History"
+               FontAttributes="Bold"
+                TextColor="Black"
+               FontSize="Medium" />
+
+            <CollectionView
+                ItemsSource="{Binding StatusHistory}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                      Orientation="Vertical"
+                      ItemSpacing="12"/>
+                </CollectionView.ItemsLayout>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:StatusHistory">
-                        <Frame Margin="5" Padding="5" BorderColor="LightGray" CornerRadius="6">
+
+                        <HorizontalStackLayout
+                            Padding="5"
+                            Spacing="10"
+                            VerticalOptions="Center">
+
+                            <BoxView
+                                  WidthRequest="8"
+                                  HeightRequest="8"
+                                  CornerRadius="4"
+                                  BackgroundColor="LightGray"
+                                  VerticalOptions="Center" />
+
+                            <!-- status + timestamp -->
                             <VerticalStackLayout>
-                                <Label Text="{Binding Status}" />
-                                <Label Text="{Binding Timestamp}" FontSize="12" TextColor="Gray" />
+                                <Label
+                                    Text="{Binding Status}"
+                                    FontAttributes="Bold"
+                                    FontSize="14"/>
+                                <Label
+                                    Text="{Binding Timestamp, StringFormat='{}{0:MMM d, yyyy h:mm tt}'}"
+                                    FontSize="12"
+                                    TextColor="Gray"/>
                             </VerticalStackLayout>
-                        </Frame>
+
+                        </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

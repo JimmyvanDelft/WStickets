@@ -3,12 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:WSTickets.App"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             x:Class="WSTickets.App.App">
+             xmlns:helpers="clr-namespace:WSTickets.App.Helpers"
+            x:Class="WSTickets.App.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="appColors" Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary x:Name="appStyles" Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary>
+                    <helpers:InverseBoolConverter x:Key="InverseBoolConverter" />
+                    <helpers:StatusToColorConverter x:Key="StatusToColorConverter" />
+                    <helpers:PriorityToImageConverter x:Key="PriorityToImageConverter" />
+                </ResourceDictionary>
 
                 <material:StyleResource ColorsOverride="{x:Reference appColors}" BasedOn="{x:Reference appStyles}" />
             </ResourceDictionary.MergedDictionaries>
