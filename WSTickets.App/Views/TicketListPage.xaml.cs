@@ -7,21 +7,24 @@ namespace WSTickets.App.Views;
 
 public partial class TicketListPage : ContentPage
 {
+    private TicketListViewModel _viewModel;
+
     public TicketListPage()
     {
         InitializeComponent();
-        BindingContext = new TicketListViewModel();
+        _viewModel = new TicketListViewModel();
+        BindingContext = _viewModel;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        if (BindingContext is TicketListViewModel vm)
+        if (_viewModel != null)
         {
             // Only refresh if not already refreshing
-            if (!vm.IsRefreshing)
-                vm.RefreshCommand.Execute(null);
+            if (!_viewModel.IsRefreshing)
+                _viewModel.RefreshCommand.Execute(null);
         }
     }
 
