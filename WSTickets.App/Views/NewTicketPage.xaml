@@ -42,10 +42,10 @@
           ItemsLayout="HorizontalList"
           HeightRequest="100">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="ImageSource">
                         <Frame Padding="0" HasShadow="False" CornerRadius="8" HeightRequest="80" WidthRequest="80">
                             <Image
-                  Source="{Binding}"
+                  Source="{Binding .}"
                   Aspect="AspectFill"/>
                         </Frame>
                     </DataTemplate>
