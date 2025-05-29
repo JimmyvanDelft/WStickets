@@ -180,25 +180,47 @@
             </HorizontalStackLayout>
 
             <!-- Status History -->
-            <Label Text="Status History" FontAttributes="Bold" FontSize="Medium" />
+            <Label Text="Status History"
+               FontAttributes="Bold"
+               FontSize="Medium" />
+
             <CollectionView
                 ItemsSource="{Binding StatusHistory}"
-                HeightRequest="150">
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                      Orientation="Vertical"
+                      ItemSpacing="12"/>
+                </CollectionView.ItemsLayout>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:StatusHistory">
-                        <Frame
-                            Margin="5"
+
+                        <HorizontalStackLayout
                             Padding="5"
-                            BorderColor="LightGray"
-                            CornerRadius="6">
+                            Spacing="10"
+                            VerticalOptions="Center">
+
+                            <BoxView
+                                  WidthRequest="8"
+                                  HeightRequest="8"
+                                  CornerRadius="4"
+                                  BackgroundColor="LightGray"
+                                  VerticalOptions="Center" />
+
+                            <!-- status + timestamp -->
                             <VerticalStackLayout>
-                                <Label Text="{Binding Status}" />
                                 <Label
-                                    Text="{Binding Timestamp}"
+                                    Text="{Binding Status}"
+                                    FontAttributes="Bold"
+                                    FontSize="14"/>
+                                <Label
+                                    Text="{Binding Timestamp, StringFormat='{}{0:MMM d, yyyy h:mm tt}'}"
                                     FontSize="12"
-                                    TextColor="Gray" />
+                                    TextColor="Gray"/>
                             </VerticalStackLayout>
-                        </Frame>
+
+                        </HorizontalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
