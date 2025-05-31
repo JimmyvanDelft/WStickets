@@ -1,4 +1,6 @@
 ﻿namespace WSTickets.App;
+
+using Microsoft.Maui.Controls;
 using WSTickets.App.Services;
 using WSTickets.App.Views;
 
@@ -19,7 +21,9 @@ public partial class App : Application
 
         if (isLoggedIn)
         {
-            MainPage = new AppShell();
+            var shell = new AppShell();
+            shell.AddRoleBasedFlyoutItems();
+            MainPage = shell;
         }
         else
         {
@@ -29,7 +33,9 @@ public partial class App : Application
 
     public static void NavigateToShell()
     {
-        Current.MainPage = new AppShell();
+        var shell = new AppShell();
+        shell.AddRoleBasedFlyoutItems();
+        Current.MainPage = shell;
     }
 
     public static void NavigateToLoginPage()
