@@ -33,7 +33,8 @@ public class AttachmentsController : ControllerBase
                 FilePath = baseUrl + a.FilePath,
                 FileType = a.FileType,
                 UploadedAt = a.UploadedAt,
-                UploadedById = a.UploadedById
+                UploadedById = a.UploadedById,
+                UploadedByName = a.UploadedBy.FullName
             })
             .ToListAsync();
 

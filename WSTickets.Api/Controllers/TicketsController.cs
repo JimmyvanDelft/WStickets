@@ -37,6 +37,9 @@ public class TicketsController : ControllerBase
         }
 
         var tickets = await query
+            .Include(t => t.Reporter)
+            .Include(t => t.Assignee)
+            .Include(t => t.Company)
             .Select(t => new TicketDto
             {
                 Id = t.Id,
@@ -45,8 +48,11 @@ public class TicketsController : ControllerBase
                 Priority = t.Priority,
                 CurrentStatus = t.CurrentStatus,
                 ReporterId = t.ReporterId,
+                ReporterName = t.Reporter.FullName,
                 AssigneeId = t.AssigneeId,
-                CompanyId = t.CompanyId
+                AssigneeName = t.Assignee != null ? t.Assignee.FullName : null,
+                CompanyId = t.CompanyId,
+                CompanyName = t.Company.Name
             })
             .ToListAsync();
 
@@ -63,7 +69,24 @@ public class TicketsController : ControllerBase
         int userId = int.Parse(userIdClaim.Value);
 
         var tickets = await _context.Tickets
+            .Include(t => t.Reporter)
+            .Include(t => t.Assignee)
+            .Include(t => t.Company)
             .Where(t => t.ReporterId == userId || t.AssigneeId == userId)
+            .Select(t => new TicketDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                Priority = t.Priority,
+                CurrentStatus = t.CurrentStatus,
+                ReporterId = t.ReporterId,
+                ReporterName = t.Reporter.FullName,
+                AssigneeId = t.AssigneeId,
+                AssigneeName = t.Assignee != null ? t.Assignee.FullName : null,
+                CompanyId = t.CompanyId,
+                CompanyName = t.Company.Name
+            })
             .ToListAsync();
 
         return Ok(tickets);
@@ -72,7 +95,11 @@ public class TicketsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<TicketDto>> GetTicket(int id)
     {
-        var ticket = await _context.Tickets.FindAsync(id);
+        var ticket = await _context.Tickets
+            .Include(t => t.Reporter)
+            .Include(t => t.Assignee)
+            .Include(t => t.Company)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
         if (ticket == null)
             return NotFound();
@@ -85,8 +112,11 @@ public class TicketsController : ControllerBase
             Priority = ticket.Priority,
             CurrentStatus = ticket.CurrentStatus,
             ReporterId = ticket.ReporterId,
+            ReporterName = ticket.Reporter.FullName,
             AssigneeId = ticket.AssigneeId,
-            CompanyId = ticket.CompanyId
+            AssigneeName = ticket.Assignee != null ? ticket.Assignee.FullName : null,
+            CompanyId = ticket.CompanyId,
+            CompanyName = ticket.Company.Name
         };
 
         return Ok(ticketDto);

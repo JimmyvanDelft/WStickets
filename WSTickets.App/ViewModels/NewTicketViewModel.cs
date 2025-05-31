@@ -63,6 +63,13 @@ namespace WSTickets.App.ViewModels
         {
             try
             {
+                var status = await Permissions.RequestAsync<Permissions.Camera>();
+                if (status != PermissionStatus.Granted)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No Permissions", "OK");
+                    return;
+                }
+
                 // let the user take a photo (or swap for PickPhotoAsync)
                 var photo = await MediaPicker.CapturePhotoAsync(new MediaPickerOptions
                 {
@@ -79,7 +86,7 @@ namespace WSTickets.App.ViewModels
             }
             catch (Exception ex)
             {
-                // TODO set HasError/ErrorMessage
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 

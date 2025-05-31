@@ -37,6 +37,9 @@ public partial class TicketListViewModel : ObservableObject
     [ObservableProperty]
     private string selectedSortOption = "Created Date (Newest)";
 
+    [ObservableProperty]
+    private string searchQuery = string.Empty;
+
     public bool TicketsMessageVisible => !NoTicketsMessageVisible;
 
     // Filter and sort options
@@ -89,7 +92,8 @@ public partial class TicketListViewModel : ObservableObject
             if (e.PropertyName is nameof(ShowActiveOnly)
                 or nameof(SelectedStatusString)
                 or nameof(SelectedPriorityString)
-                or nameof(SelectedSortOption))
+                or nameof(SelectedSortOption)
+                or nameof(SearchQuery))
             {
                 ApplyFiltersAndSort();
             }
@@ -156,6 +160,19 @@ public partial class TicketListViewModel : ObservableObject
           && Enum.TryParse<TicketPriority>(SelectedPriorityString, out var pr))
         {
             filteredTickets = filteredTickets.Where(t => t.Priority == pr);
+        }
+
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            var lowerQuery = SearchQuery.ToLower();
+
+            filteredTickets = filteredTickets.Where(t =>
+                (!string.IsNullOrEmpty(t.Title) && t.Title.ToLower().Contains(lowerQuery)) ||
+                (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(lowerQuery)) ||
+                (!string.IsNullOrEmpty(t.CompanyName) && t.CompanyName.ToLower().Contains(lowerQuery)) ||
+                (!string.IsNullOrEmpty(t.AssigneeName) && t.AssigneeName.ToLower().Contains(lowerQuery)) ||
+                (!string.IsNullOrEmpty(t.ReporterName) && t.ReporterName.ToLower().Contains(lowerQuery))
+            );
         }
 
         // Apply sorting

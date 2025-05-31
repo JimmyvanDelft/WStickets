@@ -13,4 +13,5 @@ public class Attachment
     public string FileType { get; set; }
     public DateTime UploadedAt { get; set; }
     public int UploadedById { get; set; }
+    public string? UploadedByName { get; set; }
 }
