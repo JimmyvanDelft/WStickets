@@ -7,6 +7,7 @@ public class AttachmentDto
     public string FileType { get; set; }
     public DateTime UploadedAt { get; set; }
     public int UploadedById { get; set; }
+    public string? UploadedByName { get; set; }
 }
 
 public class AttachmentCreateDto

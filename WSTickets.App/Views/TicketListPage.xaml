@@ -118,7 +118,7 @@
                       BackgroundColor="{StaticResource Primary}"
                       CornerRadius="4"/>
                                         <Label
-                      Text="{Binding ReporterId}"
+                      Text="{Binding ReporterName}"
                       FontSize="13"
                       TextColor="Gray"/>
                                     </HorizontalStackLayout>
@@ -130,13 +130,19 @@
                     FontSize="16"
                     TextColor="Black"/>
 
+                                    <!-- Company -->
+                                    <Label
+                                        Text="{Binding CompanyName}"
+                                        FontSize="13"
+                                        TextColor="#555"/>
+
                                     <!-- Description -->
                                     <Label
-                    Text="{Binding Description}"
-                    FontSize="13"
-                    TextColor="#555"
-                    LineBreakMode="TailTruncation"
-                    MaxLines="2"/>
+                                            Text="{Binding Description}"
+                                            FontSize="13"
+                                            TextColor="#555"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="2"/>
 
                                     <!-- ID, Priority Icon, Status Badge -->
                                     <HorizontalStackLayout Spacing="10" Padding="0,4,0,0">

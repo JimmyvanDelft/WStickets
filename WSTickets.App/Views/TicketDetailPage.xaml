@@ -18,6 +18,14 @@
                 FontSize="20"
                 TextColor="Black"
                 FontAttributes="Bold" />
+            <Label FontSize="14" TextColor="Gray">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} - {1}">
+                        <Binding Path="Ticket.CompanyName" />
+                        <Binding Path="Ticket.ReporterName" />
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
             <Label
                 Text="{Binding Ticket.Description}"
                 FontSize="14"
@@ -84,8 +92,15 @@
                                 </Image>
                             </Frame>
                             <Label
-                                Text="{Binding UploadedAt, StringFormat='{0:dd-MM-yyyy HH:mm}'}"
+                                Text="{Binding UploadedByName}"
                                 Padding="0,8,0,0"
+                                FontSize="10"
+                                TextColor="Gray"
+                                HorizontalTextAlignment="Center"
+                                LineBreakMode="TailTruncation" />
+                            <Label
+                                Text="{Binding UploadedAt, StringFormat='{0:dd-MM-yyyy HH:mm}'}"
+                                Padding="0,2,0,0"
                                 FontSize="10"
                                 TextColor="Gray"
                                 HorizontalTextAlignment="Center"
