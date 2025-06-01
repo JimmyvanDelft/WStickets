@@ -16,10 +16,10 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(AllTicketsPage), typeof(AllTicketsPage));
             Routing.RegisterRoute(nameof(NewTicketPage), typeof(NewTicketPage));
             Routing.RegisterRoute(nameof(TicketDetailPage), typeof(TicketDetailPage));
+            Routing.RegisterRoute(nameof(ManageAccountsPage), typeof(ManageAccountsPage));
 
-
-            // My Tickets
-            Items.Add(new FlyoutItem
+        // My Tickets
+        Items.Add(new FlyoutItem
             {
                 Title = "My Tickets",
                 Icon = "inbox",
@@ -77,7 +77,6 @@ public partial class AppShell : Shell
             Items.Insert(0, new FlyoutItem
             {
                 Title = "All Tickets",
-                Icon = "list_alt",
                 Items =
             {
                 new ShellContent
@@ -88,6 +87,21 @@ public partial class AppShell : Shell
                 }
             }
             });
+
+            Items.Insert(3, new FlyoutItem
+            {
+                Title = "Manage Accounts",
+                Items =
+            {
+                new ShellContent
+                {
+                    Title = "Manage Accounts",
+                    Route = nameof(ManageAccountsPage),
+                    ContentTemplate = new DataTemplate(typeof(ManageAccountsPage))
+                }
+            }
+            });
+
         }
     }
 

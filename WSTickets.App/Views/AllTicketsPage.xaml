@@ -126,7 +126,7 @@ HasShadow="True">
       BackgroundColor="{StaticResource Primary}"
       CornerRadius="4"/>
                                         <Label
-      Text="{Binding ReporterName}"
+      Text="{Binding AssigneeName}"
       FontSize="13"
       TextColor="Gray"/>
                                     </HorizontalStackLayout>
