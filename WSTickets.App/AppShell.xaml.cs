@@ -17,6 +17,8 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(NewTicketPage), typeof(NewTicketPage));
             Routing.RegisterRoute(nameof(TicketDetailPage), typeof(TicketDetailPage));
             Routing.RegisterRoute(nameof(ManageAccountsPage), typeof(ManageAccountsPage));
+            Routing.RegisterRoute(nameof(NewAccountPage), typeof(NewAccountPage));
+
 
         // My Tickets
         Items.Add(new FlyoutItem

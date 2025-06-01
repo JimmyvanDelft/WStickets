@@ -9,4 +9,10 @@ public partial class ManageAccountsPage : ContentPage
         InitializeComponent();
         BindingContext = new ManageAccountsViewModel();
     }
+
+    private async void OnNewAccountButtonClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new NewAccountPage());
+    }
+
 }

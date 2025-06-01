@@ -7,8 +7,8 @@
     xmlns:viewmodels="clr-namespace:WSTickets.App.ViewModels"
     x:DataType="viewmodels:ManageAccountsViewModel"
     Title="Manage Accounts">
-
-    <StackLayout Padding="10,0,10,10">
+    <Grid>
+        <StackLayout Padding="10,0,10,10">
         <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
 
         <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding ErrorMessage}" />
@@ -47,7 +47,7 @@
                                    FontAttributes="Bold"
                                    FontSize="14"
                                    TextColor="Black" />
-                                                    <Label Text="{Binding Username, StringFormat='@{0}'}"
+                                <Label Text="{Binding Username, StringFormat='@{0}'}"
                                    FontSize="13"
                                    TextColor="Gray"
                                    VerticalOptions="Center" />
@@ -67,4 +67,18 @@
 
         </CollectionView>
     </StackLayout>
+
+    <Button
+            Text="+"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="White"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="20"
+            Clicked="OnNewAccountButtonClicked"/>
+    </Grid>
 </ContentPage>

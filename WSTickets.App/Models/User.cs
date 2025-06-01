@@ -13,3 +13,12 @@ public class User
     [JsonIgnore]
     public bool IsCustomer => RoleName?.ToLower() == "customer";
 }
+
+public class UserCreateDto
+{
+    public string FullName { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string RoleName { get; set; }
+    public int CompanyId { get; set; }
+}

@@ -30,4 +30,18 @@ public class UserService
             return new();
         }
     }
+
+    public async Task<bool> CreateUserAsync(UserCreateDto dto)
+    {
+        try
+        {
+            var response = await ApiClient.Client.PostAsJsonAsync("users", dto);
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 }

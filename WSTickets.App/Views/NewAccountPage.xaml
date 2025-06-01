@@ -1,0 +1,41 @@
+<ContentPage
+    x:Class="WSTickets.App.Views.NewAccountPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:WSTickets.App.ViewModels"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    x:DataType="viewmodels:NewAccountViewModel"
+    Title="Create New Account">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <material:TextField Title="Full Name"
+                                Text="{Binding FullName}" />
+
+            <material:TextField Title="Username"
+                                Text="{Binding Username}" />
+
+            <material:TextField Title="Email"
+                                Text="{Binding Email}" />
+
+            <material:AutoCompleteTextField
+                Title="Company"
+                Text="{Binding CompanyInput, Mode=TwoWay}"
+                SelectedText="{Binding CompanyInput, Mode=TwoWay}"
+                ItemsSource="{Binding CompanySuggestions}"
+                Threshold="1"
+                AllowClear="True"
+                TextColor="Black"/>
+
+            <Picker Title="Role"
+                    ItemsSource="{Binding AvailableRoles}"
+                    SelectedItem="{Binding SelectedRole}" />
+
+            <Button Text="Create Account"
+                    Command="{Binding CreateAccountCommand}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
