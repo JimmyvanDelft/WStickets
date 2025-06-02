@@ -15,4 +15,11 @@ public partial class ManageAccountsPage : ContentPage
         await Navigation.PushAsync(new NewAccountPage());
     }
 
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is ManageAccountsViewModel vm)
+            await vm.RefreshAsync();
+    }
 }

@@ -16,6 +16,10 @@
             <material:TextField Title="Username"
                                 Text="{Binding Username}" />
 
+            <material:TextField Title="Password"
+                                Text="{Binding Password}"
+                                IsPassword="True" />
+
             <material:TextField Title="Email"
                                 Text="{Binding Email}" />
 
@@ -28,9 +32,11 @@
                 AllowClear="True"
                 TextColor="Black"/>
 
-            <Picker Title="Role"
-                    ItemsSource="{Binding AvailableRoles}"
-                    SelectedItem="{Binding SelectedRole}" />
+            <material:DropdownField
+                Title="Role"
+                ItemsSource="{Binding AvailableRoles}"
+                SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                TextColor="Black" />
 
             <Button Text="Create Account"
                     Command="{Binding CreateAccountCommand}"

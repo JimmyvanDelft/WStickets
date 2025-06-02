@@ -48,4 +48,10 @@ public partial class ManageAccountsViewModel : ObservableObject
             IsLoading = false;
         }
     }
+
+    public async Task RefreshAsync()
+    {
+        await LoadUsersAsync();
+    }
+
 }
