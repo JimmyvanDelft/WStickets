@@ -20,7 +20,6 @@ public partial class ManageAccountsViewModel : ObservableObject
     public ManageAccountsViewModel()
     {
         LoadUsersCommand = new AsyncRelayCommand(LoadUsersAsync);
-        _ = LoadUsersAsync();
     }
 
     public IAsyncRelayCommand LoadUsersCommand { get; }
@@ -52,6 +51,50 @@ public partial class ManageAccountsViewModel : ObservableObject
     public async Task RefreshAsync()
     {
         await LoadUsersAsync();
+    }
+
+    [RelayCommand]
+    private async Task OnUserLongPressed(User user)
+    {
+        if (user == null) return;
+
+        string action = await Shell.Current.DisplayActionSheet(
+            $"Acties voor {user.FullName}", "Annuleren", null, "Verwijderen");
+
+        if (action == "Verwijderen")
+            await DeleteUserAsync(user);
+    }
+
+    private async Task DeleteUserAsync(User user)
+    {
+        bool confirm = await Shell.Current.DisplayAlert(
+            "Bevestigen", $"Weet je zeker dat je {user.FullName} wilt verwijderen?", "Ja", "Nee");
+
+        if (!confirm) return;
+
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+
+            var success = await UserService.Instance.DeleteUserAsync(user.Id);
+            if (success)
+            {
+                Users.Remove(user);
+            }
+            else
+            {
+                ErrorMessage = "Verwijderen is mislukt.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Fout bij verwijderen: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
 }

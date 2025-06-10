@@ -44,4 +44,18 @@ public class UserService
         }
     }
 
+    public async Task<bool> DeleteUserAsync(int userId)
+    {
+        try
+        {
+            var response = await ApiClient.Client.DeleteAsync($"users/{userId}");
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+
 }

@@ -17,7 +17,16 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:User">
                     <Grid Padding="10" ColumnDefinitions="Auto,*" ColumnSpacing="12">
-                        <!-- Avatar -->
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                NumberOfTapsRequired="1"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ManageAccountsViewModel}}, Path=UserLongPressedCommand}"
+                CommandParameter="{Binding}" />
+
+                            </Grid.GestureRecognizers>
+
+                            <!-- Avatar -->
                         <Image
                    HeightRequest="48"
                    WidthRequest="48"
@@ -47,11 +56,11 @@
                                    FontAttributes="Bold"
                                    FontSize="14"
                                    TextColor="Black" />
-                                <Label Text="{Binding Username, StringFormat='@{0}'}"
+                                    <Label Text="{Binding Username, StringFormat='@{0}'}"
                                    FontSize="13"
                                    TextColor="Gray"
                                    VerticalOptions="Center" />
-                            </HorizontalStackLayout>
+                                </HorizontalStackLayout>
 
                             <Label Text="{Binding CompanyName}"
                        FontSize="13"
