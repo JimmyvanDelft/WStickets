@@ -11,7 +11,7 @@ public partial class App : Application
         InitializeComponent();
 
         // Temporary MainPage to show the login page
-        MainPage = new ContentPage();
+        MainPage = new NavigationPage(new LoadingPage());
         InitializeMainPageAsync();
     }
 
