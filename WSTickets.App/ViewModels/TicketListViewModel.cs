@@ -9,7 +9,7 @@ namespace WSTickets.App.ViewModels;
 
 public partial class TicketListViewModel : ObservableObject
 {
-    private List<Ticket> _allTickets = new();
+    protected List<Ticket> _allTickets = new();
 
     public ObservableCollection<Ticket> Tickets { get; } = new();
 
@@ -111,7 +111,7 @@ public partial class TicketListViewModel : ObservableObject
         await Shell.Current.GoToAsync($"{nameof(TicketDetailPage)}?id={ticket.Id}");
     }
 
-    private async Task LoadTicketsAsync()
+    protected virtual async Task LoadTicketsAsync()
     {
         IsRefreshing = true;
 
@@ -137,7 +137,7 @@ public partial class TicketListViewModel : ObservableObject
         }
     }
 
-    private void ApplyFiltersAndSort()
+    protected void ApplyFiltersAndSort()
     {
         var filteredTickets = _allTickets.AsEnumerable();
 

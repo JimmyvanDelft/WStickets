@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="WSTickets.App.Views.ManageAccountsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:WSTickets.App.Models"
+    xmlns:viewmodels="clr-namespace:WSTickets.App.ViewModels"
+    x:DataType="viewmodels:ManageAccountsViewModel"
+    Title="Manage Accounts">
+    <Grid>
+        <StackLayout Padding="10,0,10,10">
+        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
+
+        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding ErrorMessage}" />
+
+        <CollectionView ItemsSource="{Binding Users}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:User">
+                    <Grid Padding="10" ColumnDefinitions="Auto,*" ColumnSpacing="12">
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                NumberOfTapsRequired="1"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ManageAccountsViewModel}}, Path=UserLongPressedCommand}"
+                CommandParameter="{Binding}" />
+
+                            </Grid.GestureRecognizers>
+
+                            <!-- Avatar -->
+                        <Image
+                   HeightRequest="48"
+                   WidthRequest="48"
+                   Aspect="AspectFill"
+                   VerticalOptions="Center">
+                            <Image.Clip>
+                                <EllipseGeometry Center="24,24" RadiusX="24" RadiusY="24" />
+                            </Image.Clip>
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image"
+                     Binding="{Binding IsCustomer}"
+                     Value="True">
+                                    <Setter Property="Source" Value="reporter_profile.png" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Image"
+                     Binding="{Binding IsCustomer}"
+                     Value="False">
+                                    <Setter Property="Source" Value="developer_profile.png" />
+                                </DataTrigger>
+                            </Image.Triggers>
+                        </Image>
+
+                        <!-- User info -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <HorizontalStackLayout Spacing="6">
+                                <Label Text="{Binding FullName}"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   TextColor="Black" />
+                                    <Label Text="{Binding Username, StringFormat='@{0}'}"
+                                   FontSize="13"
+                                   TextColor="Gray"
+                                   VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+
+                            <Label Text="{Binding CompanyName}"
+                       FontSize="13"
+                       TextColor="Gray" />
+
+                            <Label Text="{Binding Email}"
+                       FontSize="13"
+                       TextColor="#555" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </StackLayout>
+
+    <Button
+            Text="+"
+            FontSize="28"
+            WidthRequest="60"
+            HeightRequest="60"
+            CornerRadius="30"
+            BackgroundColor="{StaticResource Primary}"
+            TextColor="White"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="20"
+            Clicked="OnNewAccountButtonClicked"/>
+    </Grid>
+</ContentPage>

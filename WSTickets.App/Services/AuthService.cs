@@ -50,7 +50,9 @@ public class AuthService
 
         ApiClient.SetAuthToken(result.Token);
 
-        LoadCurrentUserAsync();
+        var success = await LoadCurrentUserAsync();
+        if (!success)
+            return (false, "Failed to load user info after login.");
 
         return (true, string.Empty);
     }

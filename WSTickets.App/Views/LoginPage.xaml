@@ -52,7 +52,7 @@
                            HorizontalOptions="Center" />
 
                     <material:TextField 
-                        Title="Email"
+                        Title="Username"
                         Text="{Binding Username}"/>
 
                     <material:TextField 
