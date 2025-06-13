@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PageObjects\" />
 	  <Folder Include="Drivers\" />
 	  <Folder Include="Utilities\" />
   </ItemGroup>
