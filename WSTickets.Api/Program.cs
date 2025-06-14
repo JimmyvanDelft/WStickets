@@ -16,8 +16,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
     });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
+builder.Services.AddConfiguredDbContext(builder.Configuration);
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettings);
@@ -69,3 +68,18 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 app.Run();
+
+public partial class Program { }
+
+public static class DbContextRegistration
+{
+    public static void AddConfiguredDbContext(this IServiceCollection services, IConfiguration configuration)
+    {
+        var alreadyRegistered = services.Any(s =>
+            s.ServiceType == typeof(DbContextOptions<AppDbContext>));
+        if (alreadyRegistered) return;
+
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+    }
+}
