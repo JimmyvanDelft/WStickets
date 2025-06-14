@@ -57,7 +57,7 @@ public class AuthService
         return (true, string.Empty);
     }
 
-    public string? CurrentUserRole { get; private set; }
+    public string? CurrentUserRole { get; internal set; }
     public int? CurrentUserId { get; private set; }
 
     public async Task<bool> LoadCurrentUserAsync()

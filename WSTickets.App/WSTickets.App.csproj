@@ -50,6 +50,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="WSTickets.App.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#328E6E" />
 
