@@ -36,43 +36,43 @@
                 <VerticalStackLayout Spacing="20">
 
                     <Image Source="wikibase_contrast.png"
-                           WidthRequest="250"
-                           HorizontalOptions="Center" 
-                           Margin="20"/>
+                        WidthRequest="250"
+                        HorizontalOptions="Center"
+                        Margin="20"/>
 
                     <Label Text="Sign in to your Account"
-                           FontSize="26"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource Primary}" 
-                           HorizontalOptions="Center" />
+                        FontSize="26"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource Primary}"
+                        HorizontalOptions="Center" />
 
                     <Label Text="Don't have an account? Sign Up"
-                           FontSize="13"
-                           TextColor="Gray"
-                           HorizontalOptions="Center" />
+                        FontSize="13"
+                        TextColor="Gray"
+                        HorizontalOptions="Center" />
 
-                    <material:TextField 
+                    <material:TextField
                         Title="Username"
                         Text="{Binding Username}"/>
 
-                    <material:TextField 
+                    <material:TextField
                         Title="Password"
                         Text="{Binding Password}"
                         IsPassword="True"
                         />
 
                     <Label Text="{Binding ErrorMessage}"
-                           FontSize="13"
-                           TextColor="Red"
-                           IsVisible="{Binding HasError}"
-                           HorizontalOptions="Center" />
+                        FontSize="13"
+                        TextColor="Red"
+                        IsVisible="{Binding HasError}"
+                        HorizontalOptions="Center" />
 
                     <Label Text="Forgot Your Password ?"
-                           FontSize="12"
-                           TextColor="{StaticResource Primary}" 
-                           HorizontalOptions="End" />
+                        FontSize="12"
+                        TextColor="{StaticResource Primary}"
+                        HorizontalOptions="End" />
 
-                        <Button 
+                    <Button
                         Text="Log In"
                         Command="{Binding LoginCommand}"
                         BackgroundColor="{StaticResource Primary}"
@@ -82,16 +82,16 @@
                         HeightRequest="50" />
 
                     <Grid
-                      IsVisible="{Binding IsBusy}"
-                      BackgroundColor="Transparent"
-                      VerticalOptions="Fill"
-                      HorizontalOptions="Fill">
-                      <ActivityIndicator
-                        IsRunning="True"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        WidthRequest="50"
-                        HeightRequest="50"/>
+                        IsVisible="{Binding IsBusy}"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Fill">
+                        <ActivityIndicator
+                            IsRunning="True"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            WidthRequest="50"
+                            HeightRequest="50"/>
                     </Grid>
 
                 </VerticalStackLayout>

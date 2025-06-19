@@ -32,7 +32,7 @@
                 TextColor="Gray" />
 
             <!-- Priority -->
-            <Label Text="Priority:" FontAttributes="Bold" 
+            <Label Text="Priority:" FontAttributes="Bold"
                 TextColor="Black"/>
             <material:DropdownField
                 x:Name="PriorityDropdown"
@@ -45,7 +45,7 @@
                 IsVisible="{Binding CanEditTicket, Converter={StaticResource InverseBoolConverter}}" />
 
             <!-- Status -->
-            <Label Text="Status:" FontAttributes="Bold" 
+            <Label Text="Status:" FontAttributes="Bold"
                 TextColor="Black"/>
             <material:DropdownField
                 x:Name="StatusDropdown"
@@ -201,17 +201,17 @@
 
             <!-- Status History -->
             <Label Text="Status History"
-               FontAttributes="Bold"
+                FontAttributes="Bold"
                 TextColor="Black"
-               FontSize="Medium" />
+                FontSize="Medium" />
 
             <CollectionView
                 ItemsSource="{Binding StatusHistory}"
                 SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout
-                      Orientation="Vertical"
-                      ItemSpacing="12"/>
+                        Orientation="Vertical"
+                        ItemSpacing="12"/>
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
@@ -223,11 +223,11 @@
                             VerticalOptions="Center">
 
                             <BoxView
-                                  WidthRequest="8"
-                                  HeightRequest="8"
-                                  CornerRadius="4"
-                                  BackgroundColor="LightGray"
-                                  VerticalOptions="Center" />
+                                WidthRequest="8"
+                                HeightRequest="8"
+                                CornerRadius="4"
+                                BackgroundColor="LightGray"
+                                VerticalOptions="Center" />
 
                             <!-- status + timestamp -->
                             <VerticalStackLayout>
