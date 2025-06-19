@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WSTickets.App.Views.LoadingPage"
-             BackgroundColor="#328E6E">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WSTickets.App.Views.LoadingPage"
+    BackgroundColor="#328E6E">
     <Grid>
         <Image Source="splash.svg" WidthRequest="128" HeightRequest="128" />
         <Label Text="WSTickets" FontSize="24" TextColor="White" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,50" />
