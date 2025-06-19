@@ -65,6 +65,15 @@ public partial class ManageAccountsViewModel : ObservableObject
             await DeleteUserAsync(user);
     }
 
+    [RelayCommand]
+    private async Task DeleteUser(User user)
+    {
+        if (user == null) return;
+
+        await DeleteUserAsync(user);
+    }
+
+
     private async Task DeleteUserAsync(User user)
     {
         bool confirm = await Shell.Current.DisplayAlert(

@@ -94,10 +94,8 @@ public class AuthService
         if (!string.IsNullOrWhiteSpace(token))
         {
             ApiClient.SetAuthToken(token);
-            return true;
+            return await LoadCurrentUserAsync();
         }
-
-        LoadCurrentUserAsync();
 
         return false;
     }
