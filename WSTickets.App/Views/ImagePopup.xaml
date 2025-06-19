@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup 
+<toolkit:Popup
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -8,30 +8,30 @@
 
     <AbsoluteLayout>
         <Border
-      BackgroundColor="White"
-      Stroke="Gray"
-      StrokeThickness="0.2"
-      Padding="2"
-      AbsoluteLayout.LayoutBounds="0.5,0.5,0.99,0.99"
-      AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
-      >
+            BackgroundColor="White"
+            Stroke="Gray"
+            StrokeThickness="0.2"
+            Padding="2"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,0.99,0.99"
+            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional,HeightProportional"
+            >
             <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" >
 
                 <Image
-                  x:Name="PopupImage"
-                  Grid.Row="0"
-                  Aspect="AspectFit"
-                  HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand"
-                  />
+                    x:Name="PopupImage"
+                    Grid.Row="0"
+                    Aspect="AspectFit"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    />
 
                 <Button
-                  Grid.Row="1"
-                  Text="Close"
-                  StyleClass="Filled"
-                  Clicked="OnCloseClicked"
-                  HorizontalOptions="Center"
-                  />
+                    Grid.Row="1"
+                    Text="Close"
+                    StyleClass="Filled"
+                    Clicked="OnCloseClicked"
+                    HorizontalOptions="Center"
+                    />
 
             </Grid>
         </Border>

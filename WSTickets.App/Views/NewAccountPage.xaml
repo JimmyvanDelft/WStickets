@@ -11,17 +11,17 @@
         <VerticalStackLayout Padding="20" Spacing="16">
 
             <material:TextField Title="Full Name"
-                                Text="{Binding FullName}" />
+                Text="{Binding FullName}" />
 
             <material:TextField Title="Username"
-                                Text="{Binding Username}" />
+                Text="{Binding Username}" />
 
             <material:TextField Title="Password"
-                                Text="{Binding Password}"
-                                IsPassword="True" />
+                Text="{Binding Password}"
+                IsPassword="True" />
 
             <material:TextField Title="Email"
-                                Text="{Binding Email}" />
+                Text="{Binding Email}" />
 
             <material:AutoCompleteTextField
                 Title="Company"
@@ -39,9 +39,9 @@
                 TextColor="Black" />
 
             <Button Text="Create Account"
-                    Command="{Binding CreateAccountCommand}"
-                    BackgroundColor="{StaticResource Primary}"
-                    TextColor="White"/>
+                Command="{Binding CreateAccountCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
