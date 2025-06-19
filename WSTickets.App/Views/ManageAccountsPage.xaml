@@ -19,73 +19,84 @@
             <CollectionView ItemsSource="{Binding Users}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:User">
-                        <Grid
-                            Padding="10"
-                            ColumnDefinitions="Auto,*"
-                            ColumnSpacing="12">
+                        <SwipeView IsEnabled="{OnPlatform Android=True, Default=False}">
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ManageAccountsViewModel}}, Path=DeleteUserCommand}"
+                                        CommandParameter="{Binding}"
+                                        Text="" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
 
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ManageAccountsViewModel}}, Path=UserLongPressedCommand}"
-                                    CommandParameter="{Binding}"
-                                    NumberOfTapsRequired="1" />
+                            <Grid
+                                Padding="10"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="12">
 
-                            </Grid.GestureRecognizers>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ManageAccountsViewModel}}, Path=UserLongPressedCommand}"
+                                        CommandParameter="{Binding}"
+                                        NumberOfTapsRequired="1" />
 
-                            <!--  Avatar  -->
-                            <Image
-                                Aspect="AspectFill"
-                                HeightRequest="48"
-                                VerticalOptions="Center"
-                                WidthRequest="48">
-                                <Image.Clip>
-                                    <EllipseGeometry
-                                        Center="24,24"
-                                        RadiusX="24"
-                                        RadiusY="24" />
-                                </Image.Clip>
-                                <Image.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding IsCustomer}"
-                                        TargetType="Image"
-                                        Value="True">
-                                        <Setter Property="Source" Value="reporter_profile.png" />
-                                    </DataTrigger>
-                                    <DataTrigger
-                                        Binding="{Binding IsCustomer}"
-                                        TargetType="Image"
-                                        Value="False">
-                                        <Setter Property="Source" Value="developer_profile.png" />
-                                    </DataTrigger>
-                                </Image.Triggers>
-                            </Image>
+                                </Grid.GestureRecognizers>
 
-                            <!--  User info  -->
-                            <VerticalStackLayout Grid.Column="1" Spacing="2">
-                                <HorizontalStackLayout Spacing="6">
-                                    <Label
-                                        FontAttributes="Bold"
-                                        FontSize="14"
-                                        Text="{Binding FullName}"
-                                        TextColor="Black" />
+                                <!--  Avatar  -->
+                                <Image
+                                    Aspect="AspectFill"
+                                    HeightRequest="48"
+                                    VerticalOptions="Center"
+                                    WidthRequest="48">
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                                            Center="24,24"
+                                            RadiusX="24"
+                                            RadiusY="24" />
+                                    </Image.Clip>
+                                    <Image.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsCustomer}"
+                                            TargetType="Image"
+                                            Value="True">
+                                            <Setter Property="Source" Value="reporter_profile.png" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsCustomer}"
+                                            TargetType="Image"
+                                            Value="False">
+                                            <Setter Property="Source" Value="developer_profile.png" />
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+
+                                <!--  User info  -->
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="{Binding FullName}"
+                                            TextColor="Black" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="{Binding Username, StringFormat='@{0}'}"
+                                            TextColor="Gray"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+
                                     <Label
                                         FontSize="13"
-                                        Text="{Binding Username, StringFormat='@{0}'}"
-                                        TextColor="Gray"
-                                        VerticalOptions="Center" />
-                                </HorizontalStackLayout>
+                                        Text="{Binding CompanyName}"
+                                        TextColor="Gray" />
 
-                                <Label
-                                    FontSize="13"
-                                    Text="{Binding CompanyName}"
-                                    TextColor="Gray" />
-
-                                <Label
-                                    FontSize="13"
-                                    Text="{Binding Email}"
-                                    TextColor="#555" />
-                            </VerticalStackLayout>
-                        </Grid>
+                                    <Label
+                                        FontSize="13"
+                                        Text="{Binding Email}"
+                                        TextColor="#555" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
